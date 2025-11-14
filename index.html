@@ -28,13 +28,6 @@
     Die korrekten Antworten waren im Original-PDF gelb markiert, sind hier aber bewusst <strong>nicht hervorgehoben</strong>.
   </p>
 
-  <div class="controls">
-    <button type="button" onclick="evaluateQuiz()">Quiz auswerten</button>
-    <button type="button" class="secondary" onclick="resetQuiz()">Alle Antworten zurücksetzen</button>
-  </div>
-
-  <p id="summary" class="result-summary"></p>
-
   <form id="quizForm">
     <fieldset data-q="q1">
       <legend>1. Den oberen Atemwegen werden zugeordnet:</legend>
@@ -893,6 +886,12 @@
     </fieldset>
 
   </form>
+    <div class="controls">
+    <button type="button" onclick="evaluateQuiz()">Quiz auswerten</button>
+    <button type="button" class="secondary" onclick="resetQuiz()">Alle Antworten zurücksetzen</button>
+  </div>
+
+  <p id="summary" class="result-summary"></p>
 
   <script>
     // ============================
