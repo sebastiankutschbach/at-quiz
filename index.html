@@ -27,12 +27,6 @@
     Alle Fragen stammen aus dem Fragenkatalog „Atemschutzgeräteträger, Stand Dezember 2023“.
     Die korrekten Antworten waren im Original-PDF gelb markiert, sind hier aber bewusst <strong>nicht hervorgehoben</strong>.
   </p>
-  <div class="note">
-    Dieses HTML enthält eine Bewertungsfunktion, die Fragen grün (korrekt) oder rot (falsch) markiert
-    und am Ende eine Auswertung anzeigt. Damit die Bewertung funktioniert, muss im JavaScript-Objekt
-    <code>answerKey</code> für jede Frage hinterlegt werden, welche Antwortbuchstaben richtig sind.
-    Das kannst du anhand der gelb markierten Lösungen im Original-PDF selbst eintragen.
-  </div>
 
   <div class="controls">
     <button type="button" onclick="evaluateQuiz()">Quiz auswerten</button>
@@ -1057,7 +1051,7 @@
       } else {
         const percent = Math.round((correctCount / totalWithKey) * 100);
         summary.textContent = 'Auswertung: ' + correctCount +
-          ' von ' + totalWithKey + ' Fragen mit hinterlegtem Lösungsschlüssel korrekt (' + percent + '%).';
+          ' von ' + totalWithKey + ' Fragen korrekt (' + percent + '%).';
       }
     }
 
