@@ -1,406 +1,1073 @@
 <!doctype html>
 <html lang="de">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Multiple-Choice-Quiz — Atemschutzgeräteträger (Auszug)</title>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-            max-width: 900px;
-            margin: 24px auto;
-            padding: 0 16px;
-            color: #111
-        }
-
-        h1 {
-            font-size: 1.4rem;
-            margin-bottom: 4px
-        }
-
-        p.lead {
-            color: #444;
-            margin-top: 0
-        }
-
-        fieldset {
-            border: 1px solid #e3e3e3;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin: 12px 0
-        }
-
-        legend {
-            font-weight: 600
-        }
-
-        label {
-            display: block;
-            margin: 6px 0;
-            cursor: pointer
-        }
-
-        .controls {
-            display: flex;
-            gap: 8px;
-            margin: 16px 0
-        }
-
-        button {
-            background: #0b63c6;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer
-        }
-
-        button.secondary {
-            background: #6b7280
-        }
-
-        .note {
-            background: #f8fafc;
-            border: 1px solid #e6eef8;
-            padding: 10px;
-            border-radius: 6px;
-            color: #0b3b6f
-        }
-
-        footer {
-            margin-top: 24px;
-            color: #666;
-            font-size: 0.9rem
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multiple-Choice-Quiz — Atemschutzgeräteträger (Fragen 1–108)</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:1000px;margin:18px auto;padding:12px;color:#111}
+    h1{font-size:1.4rem;margin-bottom:4px}
+    p.lead{color:#444;margin-top:0}
+    fieldset{border:1px solid #e5e7eb;padding:12px 14px;border-radius:8px;margin:12px 0;transition:background-color 0.2s,border-color 0.2s}
+    legend{font-weight:600}
+    label{display:block;margin:6px 0;cursor:pointer}
+    .controls{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+    button{background:#0b63c6;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    button.secondary{background:#6b7280}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    .note{background:#f8fafc;border:1px solid #e6eef8;padding:10px;border-radius:6px;color:#0b3b6f}
+    .result-summary{margin-top:12px;font-weight:700}
+    .correct{border-color:#16a34a;background:#dcfce7}
+    .incorrect{border-color:#dc2626;background:#fee2e2}
+  </style>
 </head>
-
 <body>
-    <h1>Multiple-Choice-Quiz — Auszug (Fragen 1–30)</h1>
-    <p class="lead">Dieses interaktive Quiz wurde aus dem vom Nutzer hochgeladenen Fragenkatalog erstellt. Die korrekten
-        Antworten sind <strong>nicht</strong> markiert oder hervorgehoben.</p>
-    <div class="note">Hinweis: Dies ist ein Auszug (erste 30 Fragen). Wenn du möchtest, erweitere ich das Quiz gerne auf
-        alle 108 Fragen oder füge eine automatische Bewertungsfunktion hinzu.</div>
+  <h1>Multiple-Choice-Quiz — Fragen 1–108</h1>
+  <p class="lead">
+    Alle Fragen stammen aus dem Fragenkatalog „Atemschutzgeräteträger, Stand Dezember 2023“.
+    Die korrekten Antworten waren im Original-PDF gelb markiert, sind hier aber bewusst <strong>nicht hervorgehoben</strong>.
+  </p>
+  <div class="note">
+    Dieses HTML enthält eine Bewertungsfunktion, die Fragen grün (korrekt) oder rot (falsch) markiert
+    und am Ende eine Auswertung anzeigt. Damit die Bewertung funktioniert, muss im JavaScript-Objekt
+    <code>answerKey</code> für jede Frage hinterlegt werden, welche Antwortbuchstaben richtig sind.
+    Das kannst du anhand der gelb markierten Lösungen im Original-PDF selbst eintragen.
+  </div>
 
-    <form id="quizForm">
+  <div class="controls">
+    <button type="button" onclick="evaluateQuiz()">Quiz auswerten</button>
+    <button type="button" class="secondary" onclick="resetQuiz()">Alle Antworten zurücksetzen</button>
+  </div>
 
-        <fieldset>
-            <legend>1. Den oberen Atemwegen werden zugeordnet:</legend>
-            <label><input type="checkbox" name="q1" value="a"> a) Mund</label>
-            <label><input type="checkbox" name="q1" value="b"> b) Nase</label>
-            <label><input type="checkbox" name="q1" value="c"> c) Lungenbläschen</label>
-            <label><input type="checkbox" name="q1" value="d"> d) Bronchien</label>
-        </fieldset>
+  <p id="summary" class="result-summary"></p>
 
-        <fieldset>
-            <legend>2. Der für die Einatmung notwendige Unterdruck im Brustraum wird erzeugt durch</legend>
-            <label><input type="checkbox" name="q2" value="a"> a) das Heben der Rippen und Spannen des
-                Zwerchfells.</label>
-            <label><input type="checkbox" name="q2" value="b"> b) das Einziehen des Bauches.</label>
-            <label><input type="checkbox" name="q2" value="c"> c) das Ausdehnen der Bronchien.</label>
-            <label><input type="checkbox" name="q2" value="d"> d) das Weiten der Wangen.</label>
-        </fieldset>
+  <form id="quizForm">
+    <fieldset data-q="q1">
+      <legend>1. Den oberen Atemwegen werden zugeordnet:</legend>
+      <label><input type="checkbox" name="q1" value="a"> a) Mund</label>
+      <label><input type="checkbox" name="q1" value="b"> b) Nase</label>
+      <label><input type="checkbox" name="q1" value="c"> c) Lungenbläschen</label>
+      <label><input type="checkbox" name="q1" value="d"> d) Bronchien</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>3. Die unteren Atemwege des Menschen setzen sich zusammen aus:</legend>
-            <label><input type="checkbox" name="q3" value="a"> a) Mund, Nase, Rachen, Lunge, Alveolen</label>
-            <label><input type="checkbox" name="q3" value="b"> b) Luftröhre, Bronchiolen, Bronchien, linker und rechter
-                Lungenflügel</label>
-            <label><input type="checkbox" name="q3" value="c"> c) Mund, Nase, Rachenraum</label>
-            <label><input type="checkbox" name="q3" value="d"> d) Luftröhre, Bronchien, Lunge</label>
-        </fieldset>
+    <fieldset data-q="q2">
+      <legend>2. Der für die Einatmung notwendige Unterdruck im Brustraum wird erzeugt durch</legend>
+      <label><input type="checkbox" name="q2" value="a"> a) das Heben der Rippen und Spannen des Zwerchfells.</label>
+      <label><input type="checkbox" name="q2" value="b"> b) das Einziehen des Bauches.</label>
+      <label><input type="checkbox" name="q2" value="c"> c) das Ausdehnen der Bronchien.</label>
+      <label><input type="checkbox" name="q2" value="d"> d) das Weiten der Wangen.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>4. Der Gasaustausch, als Teil des Atemvorgangs, findet statt in den</legend>
-            <label><input type="checkbox" name="q4" value="a"> a) Bronchien</label>
-            <label><input type="checkbox" name="q4" value="b"> b) Luftröhre</label>
-            <label><input type="checkbox" name="q4" value="c"> c) Alveolen</label>
-            <label><input type="checkbox" name="q4" value="d"> d) Venen</label>
-        </fieldset>
+    <fieldset data-q="q3">
+      <legend>3. Die unteren Atemwege des Menschen setzen sich zusammen aus:</legend>
+      <label><input type="checkbox" name="q3" value="a"> a) Mund, Nase, Rachen, Lunge, Alveolen</label>
+      <label><input type="checkbox" name="q3" value="b"> b) Luftröhre, Bronchiolen, Bronchien, linker und rechter Lungenflügel</label>
+      <label><input type="checkbox" name="q3" value="c"> c) Mund, Nase, Rachenraum</label>
+      <label><input type="checkbox" name="q3" value="d"> d) Luftröhre, Bronchien, Lunge</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>5. Unter "Gasaustausch" ist zu verstehen:</legend>
-            <label><input type="checkbox" name="q5" value="a"> a) der Austausch von Sauerstoff und Kohlendioxid in den
-                Lungenbläschen</label>
-            <label><input type="checkbox" name="q5" value="b"> b) die Zuführung von Sauerstoff in die
-                Körperzellen</label>
-            <label><input type="checkbox" name="q5" value="c"> c) die Ein- und Ausatmung</label>
-            <label><input type="checkbox" name="q5" value="d"> d) der Ersatz von Kohlenmonoxid (CO) durch Kohlendioxid
-                (CO2)</label>
-        </fieldset>
+    <fieldset data-q="q4">
+      <legend>4. Der Gasaustausch, als Teil des Atemvorgangs, findet statt in den</legend>
+      <label><input type="checkbox" name="q4" value="a"> a) Bronchien</label>
+      <label><input type="checkbox" name="q4" value="b"> b) Luftröhre</label>
+      <label><input type="checkbox" name="q4" value="c"> c) Alveolen</label>
+      <label><input type="checkbox" name="q4" value="d"> d) Venen</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>6. In der normalen Einatemluft liegt die Sauerstoffkonzentration bei</legend>
-            <label><input type="checkbox" name="q6" value="a"> a) ca. 15 Vol.-%.</label>
-            <label><input type="checkbox" name="q6" value="b"> b) ca. 17 Vol.-%.</label>
-            <label><input type="checkbox" name="q6" value="c"> c) ca. 21 Vol.-%.</label>
-            <label><input type="checkbox" name="q6" value="d"> d) ca. 23 Vol.-%.</label>
-        </fieldset>
+    <fieldset data-q="q5">
+      <legend>5. Unter &quot;Gasaustausch&quot; ist zu verstehen:</legend>
+      <label><input type="checkbox" name="q5" value="a"> a) der Austausch von Sauerstoff und Kohlendioxid in den Lungenbläschen</label>
+      <label><input type="checkbox" name="q5" value="b"> b) die Zuführung von Sauerstoff in die Körperzellen</label>
+      <label><input type="checkbox" name="q5" value="c"> c) die Ein - und Ausatmung</label>
+      <label><input type="checkbox" name="q5" value="d"> d) der Ersatz von Kohlenmonoxid (CO) durch Kohlendioxid (CO 2)</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>7. Die Einatemluft besteht aus:</legend>
-            <label><input type="checkbox" name="q7" value="a"> a) 78 % Stickstoff, ca. 4 % Kohlendioxid, 17 %
-                Sauerstoff, Rest Edelgase</label>
-            <label><input type="checkbox" name="q7" value="b"> b) 78 % Stickstoff, 0,04 % Kohlendioxid, 21 % Sauerstoff,
-                Rest Edelgase</label>
-            <label><input type="checkbox" name="q7" value="c"> c) 78 % Stickstoff, ca. 4 % Edelgase, 17 % Sauerstoff,
-                Rest Kohlenmonoxid</label>
-            <label><input type="checkbox" name="q7" value="d"> d) 78 % Stickstoff, ca. 1 % Kohlendioxid, 21 % Edelgase,
-                Rest Sauerstoff</label>
-        </fieldset>
+    <fieldset data-q="q6">
+      <legend>6. In der normalen Einatemluft liegt die Sauerstoffkonzentration bei</legend>
+      <label><input type="checkbox" name="q6" value="a"> a) ca. 15 Vol. -%.</label>
+      <label><input type="checkbox" name="q6" value="b"> b) ca. 17 Vol.-%.</label>
+      <label><input type="checkbox" name="q6" value="c"> c) ca. 21 Vol. -%.</label>
+      <label><input type="checkbox" name="q6" value="d"> d) ca. 23 Vol. -%.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>8. Die atmosphärische Luft setzt sich zusammen:</legend>
-            <label><input type="checkbox" name="q8" value="a"> a) 20 % Sauerstoff, 78 % Stickstoff, 2 %
-                Wasserdampf</label>
-            <label><input type="checkbox" name="q8" value="b"> b) 21 % Sauerstoff, 79 % Stickstoff</label>
-            <label><input type="checkbox" name="q8" value="c"> c) 21 % Sauerstoff, 0,96 % Edelgase, 0,04 % Kohlendioxid,
-                78 % Stickstoff</label>
-            <label><input type="checkbox" name="q8" value="d"> d) 17 % Sauerstoff, 0,96 % Edelgase, 4,04 %
-                Kohlenmonoxid, 78 % Stickstoff</label>
-        </fieldset>
+    <fieldset data-q="q7">
+      <legend>7. Die Einatemluft bes teht aus:</legend>
+      <label><input type="checkbox" name="q7" value="a"> a) 78 % Stickstoff, ca. 4 % Kohlendioxid, 17 % Sauerstoff, Rest Edelgase</label>
+      <label><input type="checkbox" name="q7" value="b"> b) 78 % Stickstoff, 0,04 % Kohlendioxid, 21 % Sauerstoff, Rest Edelgase</label>
+      <label><input type="checkbox" name="q7" value="c"> c) 78 % Stickstoff, ca. 4 % Edelgase, 17 % Sauers toff, Rest Kohlenmonoxid</label>
+      <label><input type="checkbox" name="q7" value="d"> d) 78 % Stickstoff, ca. 1 % Kohlendioxid, 21 % Edelgase, Rest Sauerstoff</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>9. Die Ausatemluft besteht aus:</legend>
-            <label><input type="checkbox" name="q9" value="a"> a) 78 % Stickstoff, 4,04 % Kohlendioxid, 17 % Sauerstoff,
-                Rest Edelgase</label>
-            <label><input type="checkbox" name="q9" value="b"> b) 78 % Stickstoff, 0,04 % Kohlendioxid, 21 % Sauerstoff,
-                Rest Edelgase</label>
-            <label><input type="checkbox" name="q9" value="c"> c) 78 % Stickstoff, ca. 4 % Edelgase, 17 % Sauerstoff,
-                Rest Kohlendioxid</label>
-            <label><input type="checkbox" name="q9" value="d"> d) 78 % Stickstoff, 4 % Kohlenoxid (CO), 17 % Sauerstoff,
-                Rest Kohlendioxid</label>
-        </fieldset>
+    <fieldset data-q="q8">
+      <legend>8. Die atmosphärische Luft setzt sich zusammen:</legend>
+      <label><input type="checkbox" name="q8" value="a"> a) 20 % Sauerstoff, 78 % Stickstoff, 2 % Wasserdampf</label>
+      <label><input type="checkbox" name="q8" value="b"> b) 21 % Sauerstoff, 79 % Stickstoff</label>
+      <label><input type="checkbox" name="q8" value="c"> c) 21 % Sauerstoff, 0,96 % Ede lgase, 0,04 % Kohlendioxid, 78 % Stickstoff</label>
+      <label><input type="checkbox" name="q8" value="d"> d) 17 % Sauerstoff, 0,96 % Edelgase, 4,04 % Kohlenmonoxid, 78 % Stickstoff</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>10. Für den Sauerstofftransport im Blut ist zuständig:</legend>
-            <label><input type="checkbox" name="q10" value="a"> a) das Blutplasma</label>
-            <label><input type="checkbox" name="q10" value="b"> b) die weißen Blutkörperchen</label>
-            <label><input type="checkbox" name="q10" value="c"> c) das Hämoglobin der roten Blutkörperchen</label>
-            <label><input type="checkbox" name="q10" value="d"> d) die Blutplättchen</label>
-        </fieldset>
+    <fieldset data-q="q9">
+      <legend>9. Die Ausatemluft besteht aus:</legend>
+      <label><input type="checkbox" name="q9" value="a"> a) 78 % Stickstoff, 4,04 % Kohlendioxid, 17 % Sauerstoff, Rest Edelgase</label>
+      <label><input type="checkbox" name="q9" value="b"> b) 78 % Stickstoff, 0,04 % Kohlendioxid, 21 % Sauerstoff, Rest Edelgase</label>
+      <label><input type="checkbox" name="q9" value="c"> c) 78 % Stickstoff, ca. 4 % Edelgase, 17 % Sauerstoff, Rest Kohlendioxid</label>
+      <label><input type="checkbox" name="q9" value="d"> d) 78 % Stickstoff, 4 % Kohlenoxid (CO), 17 % Sauerstoff, Rest Kohlendioxid</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>11. Die Atmung hat die Funktion</legend>
-            <label><input type="checkbox" name="q11" value="a"> a) dem Körper Kohlendioxid zuführen:</label>
-            <label><input type="checkbox" name="q11" value="b"> b) dass in den Zellen beim Stoffwechsel entstehende
-                Kohlendioxid an die Umgebung abzuführen.</label>
-            <label><input type="checkbox" name="q11" value="c"> c) den Körperzellen lebenswichtigen Sauerstoff
-                zuführen.</label>
-            <label><input type="checkbox" name="q11" value="d"> d) den Körper zu entschlacken.</label>
-        </fieldset>
+    <fieldset data-q="q10">
+      <legend>10. Für den Sauerstofftransport im Blut ist zuständig:</legend>
+      <label><input type="checkbox" name="q10" value="a"> a) das Blutplasm a</label>
+      <label><input type="checkbox" name="q10" value="b"> b) die weißen Blutkörperchen</label>
+      <label><input type="checkbox" name="q10" value="c"> c) das Hämoglobin der roten Blutkörperchen</label>
+      <label><input type="checkbox" name="q10" value="d"> d) die Blutplättchen</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>12. Der Luftverbrauch beträgt bei mittelschwerer Arbeit etwa</legend>
-            <label><input type="checkbox" name="q12" value="a"> a) 40 - 50 l/min.</label>
-            <label><input type="checkbox" name="q12" value="b"> b) 60 - 80 l/min.</label>
-            <label><input type="checkbox" name="q12" value="c"> c) 20 - 30 l/min.</label>
-            <label><input type="checkbox" name="q12" value="d"> d) 15 - 35 l/min.</label>
-        </fieldset>
+    <fieldset data-q="q11">
+      <legend>11. Die Atmung hat die Funktion</legend>
+      <label><input type="checkbox" name="q11" value="a"> a) dem Körper Kohlendioxid zuführen:</label>
+      <label><input type="checkbox" name="q11" value="b"> b) dass in den Zellen beim Stoffwechsel entstehende Kohlendioxid an die Umgebung</label>
+      <label><input type="checkbox" name="q11" value="c"> c) den Körperzell en lebenswichtigen Sauerstoff zuführen.</label>
+      <label><input type="checkbox" name="q11" value="d"> d) den Körper zu entschlacken.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>13. Der mittlere Atemluftverbrauch eines unter PA arbeitenden Menschen mit wärmeisolierender
-                Schutzkleidung beträgt:</legend>
-            <label><input type="checkbox" name="q13" value="a"> a) 20 l/min</label>
-            <label><input type="checkbox" name="q13" value="b"> b) 80 l/min</label>
-            <label><input type="checkbox" name="q13" value="c"> c) 50 l/min</label>
-            <label><input type="checkbox" name="q13" value="d"> d) 90 l/min</label>
-        </fieldset>
+    <fieldset data-q="q12">
+      <legend>12. Der Luftverbrauch beträgt bei mittelschwerer Arbeit etwa</legend>
+      <label><input type="checkbox" name="q12" value="a"> a) 40 - 50 l/min.</label>
+      <label><input type="checkbox" name="q12" value="b"> b) 60 - 80 l/min.</label>
+      <label><input type="checkbox" name="q12" value="c"> c) 20 - 30 l/min.</label>
+      <label><input type="checkbox" name="q12" value="d"> d) 15 - 35 l/min.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>14. Der Pressluftatmer ist ein</legend>
-            <label><input type="checkbox" name="q14" value="a"> a) Isoliergerät.</label>
-            <label><input type="checkbox" name="q14" value="b"> b) Behältergerät mit Sauerstoff.</label>
-            <label><input type="checkbox" name="q14" value="c"> c) Flaschengerät mit Filter.</label>
-            <label><input type="checkbox" name="q14" value="d"> d) umluftabhängiges Atemschutzgerät.</label>
-        </fieldset>
+    <fieldset data-q="q13">
+      <legend>13. Der mittlere Atemluftverbrauch eines unter PA arbeitenden Menschen mit wärmeisolierender Schutzkleidung beträgt:</legend>
+      <label><input type="checkbox" name="q13" value="a"> a) 20 l/min</label>
+      <label><input type="checkbox" name="q13" value="b"> b) 80 l/min</label>
+      <label><input type="checkbox" name="q13" value="c"> c) 50 l/min</label>
+      <label><input type="checkbox" name="q13" value="d"> d) 90 l/min</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>15. Atemgifte können auftreten:</legend>
-            <label><input type="checkbox" name="q15" value="a"> a) im festen Aggregatzustand</label>
-            <label><input type="checkbox" name="q15" value="b"> b) dampfförmig</label>
-            <label><input type="checkbox" name="q15" value="c"> c) gasförmig</label>
-            <label><input type="checkbox" name="q15" value="d"> d) zum Teil auch in sichtbarer Form</label>
-        </fieldset>
+    <fieldset data-q="q14">
+      <legend>14. Der Pressluftatmer ist ein</legend>
+      <label><input type="checkbox" name="q14" value="a"> a) Isoliergerät.</label>
+      <label><input type="checkbox" name="q14" value="b"> b) Behältergerät mit Sauerstoff.</label>
+      <label><input type="checkbox" name="q14" value="c"> c) Flaschengerät mit Filter.</label>
+      <label><input type="checkbox" name="q14" value="d"> d) umluftabhängiges Atemschutzgerät.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>16. Welche Aussage(n) zu Atemgiften ist/ sind richtig?</legend>
-            <label><input type="checkbox" name="q16" value="a"> a) von mit Brandrauch belasteter PSA, welche belüftet
-                wurde, geht keine Gefahr von Atemgiften mehr aus</label>
-            <label><input type="checkbox" name="q16" value="b"> b) Stoffe die selbst ungiftig sind, jedoch im Körper
-                erstickend wirken</label>
-            <label><input type="checkbox" name="q16" value="c"> c) Stoffe, die mit der Atmung in den Körper gelangen und
-                dort schädigend wirken</label>
-            <label><input type="checkbox" name="q16" value="d"> d) das Vorhandensein von gesundheitsschädlichen
-                Schwebstoffen, Gasen und Dämpfen in der Umgebungsatmosphäre</label>
-        </fieldset>
+    <fieldset data-q="q15">
+      <legend>15. Atemgifte kö nnen auftreten:</legend>
+      <label><input type="checkbox" name="q15" value="a"> a) im festen Aggregatzustand</label>
+      <label><input type="checkbox" name="q15" value="b"> b) dampfförmig</label>
+      <label><input type="checkbox" name="q15" value="c"> c) gasförmig</label>
+      <label><input type="checkbox" name="q15" value="d"> d) zum Teil auch in sichtbarer Form</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>17. Atemgifte können auf den menschlichen Körper folgende Wirkungen haben:</legend>
-            <label><input type="checkbox" name="q17" value="a"> a) Verschleiß des Knochenmarkes</label>
-            <label><input type="checkbox" name="q17" value="b"> b) Beschleunigung der Atmung</label>
-            <label><input type="checkbox" name="q17" value="c"> c) Reiz- und Ätzwirkung</label>
-            <label><input type="checkbox" name="q17" value="d"> d) Blockierung des Sauerstofftransportes</label>
-        </fieldset>
+    <fieldset data-q="q16">
+      <legend>16. Welche Aussage (n) zu Atemgiften ist/ sind richtig?</legend>
+      <label><input type="checkbox" name="q16" value="a"> a) von mit Brandrauch belasteter PSA, welche belüftet wurde, geht keine Gefahr von</label>
+      <label><input type="checkbox" name="q16" value="b"> b) Stoffe die selbst ungiftig sind, jedoch im Körper erstickend wirken</label>
+      <label><input type="checkbox" name="q16" value="c"> c) Stoffe, die mit der Atmung in den Körper gelangen und dort schädigend wirken</label>
+      <label><input type="checkbox" name="q16" value="d"> d) das Vorhandensein von gesundheitsschädlichen Schwebstoffen, Gasen und Dämp-</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>18. Sauerstoffmangel kann an Einsatzstellen ausreichend sicher wahrgenommen werden:</legend>
-            <label><input type="checkbox" name="q18" value="a"> a) durch eine Geruchs- und Geschmacksprobe</label>
-            <label><input type="checkbox" name="q18" value="b"> b) durch schimmernde Luftschichten</label>
-            <label><input type="checkbox" name="q18" value="c"> c) nur durch geeignete Messtechnik</label>
-            <label><input type="checkbox" name="q18" value="d"> d) durch Einschränkung der körperlichen und geistigen
-                Leistungsfähigkeit</label>
-        </fieldset>
+    <fieldset data-q="q17">
+      <legend>17. Atemgifte können auf den menschlichen Körper folgende Wirkungen haben:</legend>
+      <label><input type="checkbox" name="q17" value="a"> a) Verschleiß des Knochenmarkes</label>
+      <label><input type="checkbox" name="q17" value="b"> b) Beschleunigung der Atmung</label>
+      <label><input type="checkbox" name="q17" value="c"> c) Reiz- und Ätzwirkung</label>
+      <label><input type="checkbox" name="q17" value="d"> d) Blockierun g des Sauerstofftransportes</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>19. „Benzindämpfe“ sind definitionsgemäß zuzuordnen den Atemgiften mit</legend>
-            <label><input type="checkbox" name="q19" value="a"> a) mit Reiz- und Ätzwirkung.</label>
-            <label><input type="checkbox" name="q19" value="b"> b) mit erstickender Wirkung.</label>
-            <label><input type="checkbox" name="q19" value="c"> c) mit Wirkung auf Blut, Nerven und Zellen.</label>
-            <label><input type="checkbox" name="q19" value="d"> d) mit Wirkung auf das Wahrnehmungsvermögen
-                (Sinnestrübungen, Ohnmacht, Sehvermögen).</label>
-        </fieldset>
+    <fieldset data-q="q18">
+      <legend>18. Sauerstoffmangel kann an Einsatzstellen ausreichend sicher wahrgenommen werden:</legend>
+      <label><input type="checkbox" name="q18" value="a"> a) durch eine Geruchs - und Geschmacksprobe</label>
+      <label><input type="checkbox" name="q18" value="b"> b) durch schimmernde Luftschichten</label>
+      <label><input type="checkbox" name="q18" value="c"> c) nur durch geeignete Messtechnik</label>
+      <label><input type="checkbox" name="q18" value="d"> d) durch Einschränkung der körperlichen und geistigen Leistungsfähigkeit</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>20. Mit dem Auftreten größerer Mengen nitroser Gase ist zu rechnen:</legend>
-            <label><input type="checkbox" name="q20" value="a"> a) bei der Zersetzung aller Pflanzenschutzmittel</label>
-            <label><input type="checkbox" name="q20" value="b"> b) bei Bränden von anorganischem Material z.B.
-                Glasfasern</label>
-            <label><input type="checkbox" name="q20" value="c"> c) bei Gasbränden</label>
-            <label><input type="checkbox" name="q20" value="d"> d) bei der Zersetzung von Düngemitteln mit
-                Stickstoffanteil</label>
-        </fieldset>
+    <fieldset data-q="q19">
+      <legend>19. „Benzindämpfe“ sind definitionsgemäß zuzuordnen den Atemgiften mit</legend>
+      <label><input type="checkbox" name="q19" value="a"> a) mit Reiz - und Ätzwirkung.</label>
+      <label><input type="checkbox" name="q19" value="b"> b) mit ersti ckender Wirkung.</label>
+      <label><input type="checkbox" name="q19" value="c"> c) mit Wirkung auf Blut, Nerven und Zellen.</label>
+      <label><input type="checkbox" name="q19" value="d"> d) mit Wirkung auf das Wahrnehmungsvermögen (Sinnestrübungen, Ohnmacht, Seh-</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>21. Die zulässige Altersspanne für Träger umluftabhängiger Atemschutzgeräte bei der Feuerwehr liegt
-                zwischen</legend>
-            <label><input type="checkbox" name="q21" value="a"> a) 16 – 50 Jahren</label>
-            <label><input type="checkbox" name="q21" value="b"> b) 18 – 50 Jahren</label>
-            <label><input type="checkbox" name="q21" value="c"> c) 18 – 67 Jahren</label>
-            <label><input type="checkbox" name="q21" value="d"> d) 18 – 55 Jahren</label>
-        </fieldset>
+    <fieldset data-q="q20">
+      <legend>20. Mit dem Auftreten größerer Mengen nitroser Gase ist zu rechnen:</legend>
+      <label><input type="checkbox" name="q20" value="a"> a) bei der Zersetzung aller Pflanzenschutzmittel</label>
+      <label><input type="checkbox" name="q20" value="b"> b) bei Bränden von anorganischem Material z.B. Glasfasern</label>
+      <label><input type="checkbox" name="q20" value="c"> c) bei Gasbränden</label>
+      <label><input type="checkbox" name="q20" value="d"> d) bei der Zersetzung von Düngemitteln mit Stickstoffanteil</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>22. Ärztliche Untersuchungen für Atemschutzgeräteträger (bis zum 50. Lebensjahr) müssen durchgeführt
-                werden:</legend>
-            <label><input type="checkbox" name="q22" value="a"> a) jährlich</label>
-            <label><input type="checkbox" name="q22" value="b"> b) in Abständen von 3 Jahren</label>
-            <label><input type="checkbox" name="q22" value="c"> c) alle 2 Jahre</label>
-            <label><input type="checkbox" name="q22" value="d"> d) ggf. in kürzeren Abständen nach Ermessen des
-                ermächtigten Arztes</label>
-        </fieldset>
+    <fieldset data-q="q21">
+      <legend>21. Die zulässige Altersspanne für Träger umluftabhängiger Atemschutzgeräte bei der Feuerwehr liegt zwischen</legend>
+      <label><input type="checkbox" name="q21" value="a"> a) 16 – 50 Jahren</label>
+      <label><input type="checkbox" name="q21" value="b"> b) 18 – 50 Jahre n</label>
+      <label><input type="checkbox" name="q21" value="c"> c) 18 – 67 Jahren</label>
+      <label><input type="checkbox" name="q21" value="d"> d) 18 – 55 Jahren</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>23. Die Feuerwehrdienstvorschrift 7 der Feuerwehren schreiben vor, dass</legend>
-            <label><input type="checkbox" name="q23" value="a"> a) truppweise vorzugehen ist.</label>
-            <label><input type="checkbox" name="q23" value="b"> b) grundsätzlich immer alle verfügbaren Geräteträger
-                einzusetzen sind.</label>
-            <label><input type="checkbox" name="q23" value="c"> c) Sicherheitstrupps zu stellen sind.</label>
-            <label><input type="checkbox" name="q23" value="d"> d) eine Atemschutzüberwachung nur beim Vorgehen in
-                Gebäude erforderlich ist.</label>
-        </fieldset>
+    <fieldset data-q="q22">
+      <legend>22. Ärztliche Untersuchungen für Atemschutzgeräteträger (bis zum 50. Lebens- jahr) müssen durchgeführt werden:</legend>
+      <label><input type="checkbox" name="q22" value="a"> a) jährlich</label>
+      <label><input type="checkbox" name="q22" value="b"> b) in Abständen von 3 Jahren</label>
+      <label><input type="checkbox" name="q22" value="c"> c) alle 2 Jahre</label>
+      <label><input type="checkbox" name="q22" value="d"> d) ggf. in kürzeren Abständen nach Ermessen des ermächtigten Arztes</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>24. Beim Ansprechen der Restdruckwarneinrichtung an einem Atemschutzgerät</legend>
-            <label><input type="checkbox" name="q24" value="a"> a) ist das Manometer zu kontrollieren und weiter zu
-                arbeiten.</label>
-            <label><input type="checkbox" name="q24" value="b"> b) hat der betreffende Atemschutzgeräteträger sofort den
-                Rückweg anzutreten.</label>
-            <label><input type="checkbox" name="q24" value="c"> c) tritt der Trupp geschlossen den Rückzug an.</label>
-            <label><input type="checkbox" name="q24" value="d"> d) ist unverzüglichen die Feuerwehreinsatzleitstelle zu
-                informieren.</label>
-        </fieldset>
+    <fieldset data-q="q23">
+      <legend>23. Die Feuerwehrdienstvorschrift 7 der Feuerwehren schreiben vor, dass</legend>
+      <label><input type="checkbox" name="q23" value="a"> a) truppweise vorzugehen ist.</label>
+      <label><input type="checkbox" name="q23" value="b"> b) grundsätzlich immer alle verfügbaren Geräteträger einzusetzen sind.</label>
+      <label><input type="checkbox" name="q23" value="c"> c) Sicherheitstrupps zu stellen sind.</label>
+      <label><input type="checkbox" name="q23" value="d"> d) eine Atemschutzüberwachung nur beim Vorgehen in Gebäude erforderlich ist.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>25. Wenn ein Trupp unter Atemschutz vorgeht, dürfen</legend>
-            <label><input type="checkbox" name="q25" value="a"> a) je nach Lage Pressluftatmer und Filtergeräte
-                kombiniert eingesetzt werden.</label>
-            <label><input type="checkbox" name="q25" value="b"> b) nach der UVV-Feuerwehren nur PA und SSG kombiniert
-                eingesetzt werden.</label>
-            <label><input type="checkbox" name="q25" value="c"> c) nur Geräte mit gleichen Gebrauchsmerkmalen eingesetzt
-                werden.</label>
-            <label><input type="checkbox" name="q25" value="d"> d) nur Geräte des gleichen Herstellers eingesetzt
-                werden.</label>
-        </fieldset>
+    <fieldset data-q="q24">
+      <legend>24. Beim Ansprechen der Restdruckwarneinrichtung an einem Atemschutzgerät</legend>
+      <label><input type="checkbox" name="q24" value="a"> a) ist das Manometer zu kontrollieren und weiter zu arbeiten.</label>
+      <label><input type="checkbox" name="q24" value="b"> b) hat der betreffende Atemschutzgeräteträger sofort den Rückweg anzutreten.</label>
+      <label><input type="checkbox" name="q24" value="c"> c) tritt der Trupp geschlossen den Rückzug an.</label>
+      <label><input type="checkbox" name="q24" value="d"> d) ist unverzüglichen die Feuerw ehreinsatzleitstelle zu informieren.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>26. Unter dem Einsatzgrundsatz "Gleiche Typen einer Geräteart sind zu verwenden!" ist zu verstehen,
-                dass</legend>
-            <label><input type="checkbox" name="q26" value="a"> a) ein Ein-Flaschengerät (300 bar) und einem
-                Schlauchgerät grundsätzlich nicht zusammen eingesetzt werden dürfen.</label>
-            <label><input type="checkbox" name="q26" value="b"> b) auch Geräte verschiedener Hersteller in einem Trupp
-                zusammen eingesetzt werden dürfen.</label>
-            <label><input type="checkbox" name="q26" value="c"> c) Filtergeräte und Pressluftatmer nicht zusammen
-                eingesetzt werden dürfen.</label>
-            <label><input type="checkbox" name="q26" value="d"> d) grundsätzlich nur Atemfilter mit gleicher
-                Schutzwirkung und gleichem Rückhaltevermögen eingesetzt werden dürfen.</label>
-        </fieldset>
+    <fieldset data-q="q25">
+      <legend>25. Wenn ein Trupp unter Atemschutz vorgeht, dürfen</legend>
+      <label><input type="checkbox" name="q25" value="a"> a) je nach Lage Pressluftatmer und Filtergeräte kombiniert eingesetzt werden.</label>
+      <label><input type="checkbox" name="q25" value="b"> b) nach der UVV -Feuerwehren nur PA und SSG kombiniert eingesetzt werden.</label>
+      <label><input type="checkbox" name="q25" value="c"> c) nur Geräte mit gleiche n Gebrauchsmerkmalen eingesetzt werden.</label>
+      <label><input type="checkbox" name="q25" value="d"> d) nur Geräte des gleichen Herstellers eingesetzt werden.</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>27. Zu der Atemschutzüberwachung gehört unter anderem:</legend>
-            <label><input type="checkbox" name="q27" value="a"> a) das Notieren der Namen der eingesetzten Geräteträger,
-                der Flaschendrücke, die-Einsatzzeiten, die Art des Gerätes und der Einsatzort</label>
-            <label><input type="checkbox" name="q27" value="b"> b) das Feststellen der Anzahl der vorhandenen PA</label>
-            <label><input type="checkbox" name="q27" value="c"> c) die Feststellung des Herstellungsjahres der
-                Atemschutzmasken</label>
-            <label><input type="checkbox" name="q27" value="d"> d) das Überprüfen des Typenschildes des verwendeten
-                Atemschutzgerätes</label>
-        </fieldset>
+    <fieldset data-q="q26">
+      <legend>26. Unter dem Einsatzgrundsatz &quot; Gleiche Typen einer Geräteart sind zu verwen- den!&quot; ist zu verstehen, dass</legend>
+      <label><input type="checkbox" name="q26" value="a"> a) ein Ein -Flaschengerät (300 bar) und einem Schlauchgerät grundsätzlich nicht zu-</label>
+      <label><input type="checkbox" name="q26" value="b"> b) auch Geräte verschiedener Hersteller in einem Trupp zusammen eingesetzt werden</label>
+      <label><input type="checkbox" name="q26" value="c"> c) Filtergeräte und Pressluftatmer nicht zusammen eingesetzt werden dürfen.</label>
+      <label><input type="checkbox" name="q26" value="d"> d) grundsätzlich nur Atemfilter mit gleicher Schutzwirkung und gleichem Rückhalte-</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>28. An einer Einsatzstelle können Feuerwehrangehörige als Atemschutzgeräteträger eingesetzt werden,
-                wenn</legend>
-            <label><input type="checkbox" name="q28" value="a"> a) sie körperlich gesund sind, mindestens 18 Jahre alt
-                sind, seit 5 Jahren der Feuerwehr angehören und die Einsatzkurzprüfung des PA beherrschen.</label>
-            <label><input type="checkbox" name="q28" value="b"> b) wenn sie erfolgreich den Truppführerlehrgang
-                absolviert haben.</label>
-            <label><input type="checkbox" name="q28" value="c"> c) wenn sie nicht unter 18 Jahre alt sind, ärztlich
-                untersucht, als Atemschutzgeräteträger ausgebildet sind und die erforderlichen Nachweise erbracht
-                haben.</label>
-            <label><input type="checkbox" name="q28" value="d"> d) sie momentan körperlich fit sind und eine
-                Unterweisung durch andere Atemschutz-geräteträger erhalten haben.</label>
-        </fieldset>
+    <fieldset data-q="q27">
+      <legend>27. Zu der Atemschutzüberwachung gehört unter anderem:</legend>
+      <label><input type="checkbox" name="q27" value="a"> a) das Notieren der Namen der eingesetzten Geräteträger, der Flaschendrücke, die-</label>
+      <label><input type="checkbox" name="q27" value="b"> b) das Feststellen der Anzahl der vorhandenen PA</label>
+      <label><input type="checkbox" name="q27" value="c"> c) die Feststellung des Herstellungsjahres der Atemschutzmasken</label>
+      <label><input type="checkbox" name="q27" value="d"> d) das Überprüfen des Typenschildes des verwendeten Atemschutzgerätes</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>29. Die Einsatzkurzprüfung besteht aus.</legend>
-            <label><input type="checkbox" name="q29" value="a"> a) Flaschenfülldruckkontrolle, Niederdruckprüfung,
-                Funktionsprüfung des Lungenautomaten, Kontrolle des Ansprechdrucks der Restdruckwarneinrichtung</label>
-            <label><input type="checkbox" name="q29" value="b"> b) Sichtprüfung, Flaschenfülldruckkontrolle,
-                Hochdruckdichtprüfung, Funktionsprüfung des Lungenautomaten, Kontrolle des Ansprechdrucks der
-                Restdruckwarneinrichtung</label>
-            <label><input type="checkbox" name="q29" value="c"> c) Sichtprüfung, Flaschenfülldruckkontrolle,
-                Lungenautomaten- Prüfung, Prüfen der Warneinrichtung</label>
-            <label><input type="checkbox" name="q29" value="d"> d) Sichtprüfung, Druckprüfung, Dichtprüfung,
-                Lungenautomaten – Prüfung, Notsignalprüfung</label>
-        </fieldset>
+    <fieldset data-q="q28">
+      <legend>28. An einer Einsatzstelle können Feuerwehrangehörige als Atemschu tzgeräteträ- ger eingesetzt werden, wenn</legend>
+      <label><input type="checkbox" name="q28" value="a"> a) sie körperlich gesund sind, mindestens 18 Jahre alt sind, seit 5 Jahren der Feuer-</label>
+      <label><input type="checkbox" name="q28" value="b"> b) wenn sie erfolgreich den Truppführerlehrgang absolviert haben.</label>
+      <label><input type="checkbox" name="q28" value="c"> c) wenn sie nicht unter 18 Jahre alt sind, ärztlich untersucht, als Atemschutzgeräte-</label>
+      <label><input type="checkbox" name="q28" value="d"> d) sie momentan körperlich fit sind und eine Unterweisung durch andere Atem-</label>
+    </fieldset>
 
-        <fieldset>
-            <legend>30. Ein Sicherheitstrupp hat beim Atemschutzeinsatz die Aufgabe</legend>
-            <label><input type="checkbox" name="q30" value="a"> a) für Notfälle in Bereitschaft zu stehen.</label>
-            <label><input type="checkbox" name="q30" value="b"> b) für die Brandbekämpfung ein zweites Rohr
-                vornehmen.</label>
-            <label><input type="checkbox" name="q30" value="c"> c) grundsätzlich als erster Trupp Gebäude nach
-                vermissten Personen abzusuchen.</label>
-            <label><input type="checkbox" name="q30" value="d"> d) die Einsatzstellensicherung durchzuführen.</label>
-        </fieldset>
+    <fieldset data-q="q29">
+      <legend>29. Die Einsatzkurzprüfung besteht aus.</legend>
+      <label><input type="checkbox" name="q29" value="a"> a) Flaschenfülldruckkontrolle, Niederdruckprüfung, Funktionsprüfung des Lungenau-</label>
+      <label><input type="checkbox" name="q29" value="b"> b) Sichtprüfung, Flaschenfülldruckkontrolle, Hochdruckdichtprüfung, Funktionsp rü-</label>
+      <label><input type="checkbox" name="q29" value="c"> c) Sichtprüfung, Flaschenfülldruckkontrolle, Lungenautomaten - Prüfung, Prüfen der</label>
+      <label><input type="checkbox" name="q29" value="d"> d) Sichtprüfung, Druckprüfung, Dichtprüfung, Lungenautomaten – Prüfung, Notsig-</label>
+    </fieldset>
 
-        <div class="controls">
-            <button type="button" onclick="evaluateQuiz()">Quiz auswerten</button>
-            <button type="button" id="resetForm" class="secondary">Zurücksetzen</button>
-        </div>
+    <fieldset data-q="q30">
+      <legend>30. Ein Sicherheitstrupp hat beim Atemschutzeinsatz die Aufgabe</legend>
+      <label><input type="checkbox" name="q30" value="a"> a) für Notfälle in Bereitschaft zu stehen.</label>
+      <label><input type="checkbox" name="q30" value="b"> b) für die Brandbekämpfung ein zweites Rohr vornehmen.</label>
+      <label><input type="checkbox" name="q30" value="c"> c) grundsätzlich als erster Trupp Gebäude nach vermissten Personen abzusuchen.</label>
+      <label><input type="checkbox" name="q30" value="d"> d) die Einsatzst ellensicherung durchzuführen.</label>
+    </fieldset>
 
-        <p id="result" style="font-weight:600"></p>
-    </form>
-    <div id="resultBox" class="result"></div>
-    <script>
-        const answerKey = {
-            q1: ['a', 'b'], q2: ['a'], q3: ['b', 'd'], q4: ['c'], q5: ['a'], q6: ['c'], q7: ['b'], q8: ['c'], q9: ['a'], q10: ['c'], q11: ['b', 'c'], q12: ['a'], q13: ['c'], q14: ['a'], q15: ['a', 'b', 'c', 'd'], q16: ['b', 'c', 'd'], q17: ['b', 'c', 'd'], q18: ['c'], q19: ['c'], q20: ['d'], q21: ['b'], q22: ['b', 'd'], q23: ['a', 'c'], q24: ['b', 'c'], q25: ['c'], q26: ['c', 'd'], q27: ['a'], q28: ['c'], q29: ['b'], q30: ['a']
+    <fieldset data-q="q31">
+      <legend>31. An Einsatzstellen muss umluftunabhängiger Atemschutz eingesetzt werden,</legend>
+      <label><input type="checkbox" name="q31" value="a"> a) wenn der Sauerstoffgehalt der Atemluft 17 Vol. -% unterschreitet.</label>
+      <label><input type="checkbox" name="q31" value="b"> b) wenn Kohlenmonoxid zu erwarten ist.</label>
+      <label><input type="checkbox" name="q31" value="c"> c) wenn die zu erwartenden Atemgifte nicht eingeschä tzt werden können.</label>
+      <label><input type="checkbox" name="q31" value="d"> d) wenn der Gruppenführer dieses anordnet.</label>
+    </fieldset>
+
+    <fieldset data-q="q32">
+      <legend>32. Ein Atemschutztrupp umfasst im Regelfall:</legend>
+      <label><input type="checkbox" name="q32" value="a"> a) mindestens einen Truppführer und einen Truppmitglied</label>
+      <label><input type="checkbox" name="q32" value="b"> b) mindestens einen Truppführer und drei Truppmitglieder</label>
+      <label><input type="checkbox" name="q32" value="c"> c) mindestens den Truppführer</label>
+      <label><input type="checkbox" name="q32" value="d"> d) den Truppführer und weitere Truppmitglieder im Ermessen des Truppführers</label>
+    </fieldset>
+
+    <fieldset data-q="q33">
+      <legend>33. Die ausreichende Sicherung für einen Atemschutztrupp ist</legend>
+      <label><input type="checkbox" name="q33" value="a"> a) ein Schlauchhalter.</label>
+      <label><input type="checkbox" name="q33" value="b"> b) eine Feuerwehrleine.</label>
+      <label><input type="checkbox" name="q33" value="c"> c) ein Handsprechfunkgerät.</label>
+      <label><input type="checkbox" name="q33" value="d"> d) die Schlauchleitung.</label>
+    </fieldset>
+
+    <fieldset data-q="q34">
+      <legend>34. Ein Atemschutzgeräteträger hat im Rahmen der laufenden Ausbildung teilzu- nehmen an:</legend>
+      <label><input type="checkbox" name="q34" value="a"> a) einer Belastungsübung in einer anerkannten Atemschutzübungsstrecke</label>
+      <label><input type="checkbox" name="q34" value="b"> b) an einer realistischen Übung unter Einsatzbedingungen</label>
+      <label><input type="checkbox" name="q34" value="c"> c) an einer theoretischen Unterweisung</label>
+      <label><input type="checkbox" name="q34" value="d"> d) an Aus - und Fortbild ungsmaßnahmen im Ermessen des Gerätewartes</label>
+    </fieldset>
+
+    <fieldset data-q="q35">
+      <legend>35. Richtig ist die Behauptung, dass</legend>
+      <label><input type="checkbox" name="q35" value="a"> a) die Eignungsuntersuchung vor Beginn der Ausbildung erforderlich ist.</label>
+      <label><input type="checkbox" name="q35" value="b"> b) die Eignungsuntersuchung für Personen über 50 Jahre, jährlich wiederholt werden</label>
+      <label><input type="checkbox" name="q35" value="c"> c) die Eignungsuntersuchung der Gerätegruppe 2 für das Tragen von Filtergeräten</label>
+      <label><input type="checkbox" name="q35" value="d"> d) die Eignungsuntersuchung ausschließlich im Ermessen des zuständigen Arztes er-</label>
+    </fieldset>
+
+    <fieldset data-q="q36">
+      <legend>36. Der Pressluftatm er ist abhängig von</legend>
+      <label><input type="checkbox" name="q36" value="a"> a) der Umluft.</label>
+      <label><input type="checkbox" name="q36" value="b"> b) dem Ort.</label>
+      <label><input type="checkbox" name="q36" value="c"> c) der Zeit.</label>
+      <label><input type="checkbox" name="q36" value="d"> d) dem Wetter.</label>
+    </fieldset>
+
+    <fieldset data-q="q37">
+      <legend>37. Umluftunabhängig sind</legend>
+      <label><input type="checkbox" name="q37" value="a"> a) Regenerationsgeräte.</label>
+      <label><input type="checkbox" name="q37" value="b"> b) Filtergeräte.</label>
+      <label><input type="checkbox" name="q37" value="c"> c) Pressluftatmer.</label>
+      <label><input type="checkbox" name="q37" value="d"> d) Schlauchgeräte.</label>
+    </fieldset>
+
+    <fieldset data-q="q38">
+      <legend>38. Ein Filtergerät besteht aus</legend>
+      <label><input type="checkbox" name="q38" value="a"> a) dem Maskenkörper, der Warneinrichtung, der Bänderung.</label>
+      <label><input type="checkbox" name="q38" value="b"> b) dem Atemanschl uss und dem Atemfilter.</label>
+      <label><input type="checkbox" name="q38" value="c"> c) der Atemschutzmaske und dem Lungenautomaten.</label>
+      <label><input type="checkbox" name="q38" value="d"> d) der Atemschutzmaske, dem Atemfilter und einer Druckluftflasche.</label>
+    </fieldset>
+
+    <fieldset data-q="q39">
+      <legend>39. Die Lagerzeit des fabrikverschlossenen Atemfilters</legend>
+      <label><input type="checkbox" name="q39" value="a"> a) beträgt 2 Jahre.</label>
+      <label><input type="checkbox" name="q39" value="b"> b) ist unbegrenzt</label>
+      <label><input type="checkbox" name="q39" value="c"> c) ist aus der Herstellerangabe ersichtlich.</label>
+      <label><input type="checkbox" name="q39" value="d"> d) ist abhängig von den Lagerbedingungen.</label>
+    </fieldset>
+
+    <fieldset data-q="q40">
+      <legend>40. Beim Einsatz eines Filtergerätes (ABEK 2 -P 3)</legend>
+      <label><input type="checkbox" name="q40" value="a"> a) muss die Umluft genügend Sauerstoff enthalten (mind. 17 Vol. -%).</label>
+      <label><input type="checkbox" name="q40" value="b"> b) darf die Umluft kein Kohlendioxid (CO 2) und max. 3 Vol. -% Giftstoffe ent halten.</label>
+      <label><input type="checkbox" name="q40" value="c"> c) die Umluft darf kein Kohlenmonoxid (CO) und max. 0,5 Vol. -% gesundheitsschäd-</label>
+      <label><input type="checkbox" name="q40" value="d"> d) muss der Gruppenführer den Einsatz von Filtergeräten angeordnet haben.</label>
+    </fieldset>
+
+    <fieldset data-q="q41">
+      <legend>41. Bei Gas - und Kombinationsfilter steht die Partikelfilterklasse P 3 für</legend>
+      <label><input type="checkbox" name="q41" value="a"> a) ein niedriges Rückhaltevermögen.</label>
+      <label><input type="checkbox" name="q41" value="b"> b) ein mittleres Rückhaltevermögen.</label>
+      <label><input type="checkbox" name="q41" value="c"> c) ein hohes Rückhaltevermögen.</label>
+      <label><input type="checkbox" name="q41" value="d"> d) ein maximales Rückhaltevermögen von 300 Gramm Partikel.</label>
+    </fieldset>
+
+    <fieldset data-q="q42">
+      <legend>42. Ein Filtergerät ist abhängig</legend>
+      <label><input type="checkbox" name="q42" value="a"> a) von der Umgebungsatmosphäre und von der Zeit.</label>
+      <label><input type="checkbox" name="q42" value="b"> b) nur von der Umgebungsatmosphäre.</label>
+      <label><input type="checkbox" name="q42" value="c"> c) nur von der Zeit.</label>
+      <label><input type="checkbox" name="q42" value="d"> d) vom Ort.</label>
+    </fieldset>
+
+    <fieldset data-q="q43">
+      <legend>43. Filtergeräte dürfen nicht verwendet werden:</legend>
+      <label><input type="checkbox" name="q43" value="a"> a) bei starkem Funkenflug (z.B. Trennschneiden)</label>
+      <label><input type="checkbox" name="q43" value="b"> b) bei kleinen Mengen ausgelaufener rechtsdrehender Milchsäure</label>
+      <label><input type="checkbox" name="q43" value="c"> c) bei starker Flo cken- oder Staubbildung</label>
+      <label><input type="checkbox" name="q43" value="d"> d) im Zweifelsfall</label>
+    </fieldset>
+
+    <fieldset data-q="q44">
+      <legend>44. Filtergeräte dürfen eingesetzt werden:</legend>
+      <label><input type="checkbox" name="q44" value="a"> a) bei Aufräumarbeiten im Freien und in verqualmten Räumen</label>
+      <label><input type="checkbox" name="q44" value="b"> b) bei Arbeiten in Kellern, Brunnen und Schächten</label>
+      <label><input type="checkbox" name="q44" value="c"> c) bei Vegetationsbrände</label>
+      <label><input type="checkbox" name="q44" value="d"> d) unter Beachtung der Einsatzgrenzen und im Ermessen des Einsatzleiters</label>
+    </fieldset>
+
+    <fieldset data-q="q45">
+      <legend>45. Brandfluchthauben gehören</legend>
+      <label><input type="checkbox" name="q45" value="a"> a) zu den umluftabhängigen Atemschutzgeräten</label>
+      <label><input type="checkbox" name="q45" value="b"> b) zu den umluftunabhängigen Atemschutzgeräten</label>
+      <label><input type="checkbox" name="q45" value="c"> c) zu den Rettungsgeräten (Fluchtgeräten)</label>
+      <label><input type="checkbox" name="q45" value="d"> d) zu den Filtergeräten</label>
+    </fieldset>
+
+    <fieldset data-q="q46">
+      <legend>46. Der Pressluftatmer ist ein</legend>
+      <label><input type="checkbox" name="q46" value="a"> a) Behältergerät mit Druckluft</label>
+      <label><input type="checkbox" name="q46" value="b"> b) Behältergerät mit Sauerst off</label>
+      <label><input type="checkbox" name="q46" value="c"> c) Flaschengerät</label>
+      <label><input type="checkbox" name="q46" value="d"> d) umluftunabhängiges Atemschutzgerät</label>
+    </fieldset>
+
+    <fieldset data-q="q47">
+      <legend>47. Die aus den Druckluftflaschen strömende Luft wird zuerst entspannt in einem:</legend>
+      <label><input type="checkbox" name="q47" value="a"> a) Lungenautomaten</label>
+      <label><input type="checkbox" name="q47" value="b"> b) Druckminderer</label>
+      <label><input type="checkbox" name="q47" value="c"> c) Ventilgehäuse</label>
+      <label><input type="checkbox" name="q47" value="d"> d) Flaschenventil</label>
+    </fieldset>
+
+    <fieldset data-q="q48">
+      <legend>48. Die Hauptbestandteile eines Pressluftatmers sind:</legend>
+      <label><input type="checkbox" name="q48" value="a"> a) Riemen, S auerstoffflasche, Druckkas ten, Lungenautomat, Signal, Druckmesser</label>
+      <label><input type="checkbox" name="q48" value="b"> b) Tragegestell, Atemluftflasche, Druckminderer, Lungenautomat, Manometer,</label>
+      <label><input type="checkbox" name="q48" value="c"> c) Atemschutzmaske, Flasche, Rückzugsignal, Atemluftpatrone, Ventile, Manometer</label>
+      <label><input type="checkbox" name="q48" value="d"> d) Druckluftbremser, Riemen, Sauerstoffflasche, Druckkas ten, Lungenautomat, Sig-</label>
+    </fieldset>
+
+    <fieldset data-q="q49">
+      <legend>49. Nach welchem Prinzip arbeitet ein Lungenautomat (Normaldruck) eines PA?</legend>
+      <label><input type="checkbox" name="q49" value="a"> a) Aufgrund der entstehenden Druckdifferenz vor und hinter der Membran beim Ei-</label>
+      <label><input type="checkbox" name="q49" value="b"> b) Durch den am Kipphebelventil anstehenden Druck wird beim Einatmen Luft in den</label>
+      <label><input type="checkbox" name="q49" value="c"> c) Der Atemschutzgeräteträger betätigt regelmäßig den Spülknopf, dadurch wird das</label>
+      <label><input type="checkbox" name="q49" value="d"> d) Strömungstechnisch nach dem Injektorprinzip .</label>
+    </fieldset>
+
+    <fieldset data-q="q50">
+      <legend>50. Mit welchem Atemluftvorrat ist die Belastungsübung für Atemschutzgeräte- träger zu absolvieren?</legend>
+      <label><input type="checkbox" name="q50" value="a"> a) 1600 Liter</label>
+      <label><input type="checkbox" name="q50" value="b"> b) 1800 Liter</label>
+      <label><input type="checkbox" name="q50" value="c"> c) 1400 Liter</label>
+      <label><input type="checkbox" name="q50" value="d"> d) 2000 Liter</label>
+    </fieldset>
+
+    <fieldset data-q="q51">
+      <legend>51. Bei Ertönen der Restdruc kwarneinrichtung eines PA</legend>
+      <label><input type="checkbox" name="q51" value="a"> a) verlässt nur der Träger des betreffenden PA die Einsatzstelle sofort, da dies, das</label>
+      <label><input type="checkbox" name="q51" value="b"> b) verlässt der Trupp gemeinsam die Einsatzstelle, nachdem der TF sich vom Flaschen-</label>
+      <label><input type="checkbox" name="q51" value="c"> c) hat der Flaschendruck einen bes timmten Wert erreicht.</label>
+      <label><input type="checkbox" name="q51" value="d"> d) muss unverzüglich die Atemschutzüberwachung informiert werden.</label>
+    </fieldset>
+
+    <fieldset data-q="q52">
+      <legend>52. Unter Atemschutzgeräten ist vorzugehen:</legend>
+      <label><input type="checkbox" name="q52" value="a"> a) gruppenweise, ein Führer, acht Mitglieder</label>
+      <label><input type="checkbox" name="q52" value="b"> b) truppweise, mindest ens ein Führer, ein Mitglied</label>
+      <label><input type="checkbox" name="q52" value="c"> c) einzeln, damit möglichst wenige Feuerwehrangehörige gefährdet werden</label>
+      <label><input type="checkbox" name="q52" value="d"> d) nach Weisung des Gruppenführers</label>
+    </fieldset>
+
+    <fieldset data-q="q54">
+      <legend>54. Ein unter Pressluftatmern vorgehender Trupp muss</legend>
+      <label><input type="checkbox" name="q54" value="a"> a) die Länge des Rückzugwegs beachten, da hierdurch die Einsatzdauer verringert</label>
+      <label><input type="checkbox" name="q54" value="b"> b) die Länge des Rückzugswegs nicht beachten, da ausschließlich die Warneinrich-</label>
+      <label><input type="checkbox" name="q54" value="c"> c) für den Rückweg in der Regel die doppelte Atemluftmenge, wie für den Hinweg</label>
+      <label><input type="checkbox" name="q54" value="d"> d) das Erreichen des Einsatzortes der Atemschutzüberwachung mitteilen.</label>
+    </fieldset>
+
+    <fieldset data-q="q55">
+      <legend>55. Bei einer Einsatzdauer von 15 Minuten ändert sich bei einem 1 -Flaschen -Gerät (6 Liter Inhalt) der Flaschendruck um 100 bar. Wie war der Luftverbrauch des Atemschutzgeräteträgers in dieser Zeit pro Minute?</legend>
+      <label><input type="checkbox" name="q55" value="a"> a) 30 l/min</label>
+      <label><input type="checkbox" name="q55" value="b"> b) 40 l/min</label>
+      <label><input type="checkbox" name="q55" value="c"> c) 50 l/min</label>
+      <label><input type="checkbox" name="q55" value="d"> d) 20 l/min</label>
+    </fieldset>
+
+    <fieldset data-q="q56">
+      <legend>56. Bei dem Hinw eg zur Einsatzstelle hat der Druck um 60 bar abgenommen. Vor Beginn des Einsatzes betrug der Flaschendruck 290 bar. Wann muss der Rück- weg angetreten werden?</legend>
+      <label><input type="checkbox" name="q56" value="a"> a) erst beim Auslösen der akustischen Warneinrichtung (55 +/ - 5 bar)</label>
+      <label><input type="checkbox" name="q56" value="b"> b) bei 120 bar Restdruck</label>
+      <label><input type="checkbox" name="q56" value="c"> c) bei 80 bar Restdruck</label>
+      <label><input type="checkbox" name="q56" value="d"> d) bei 155 bar Restdruck</label>
+    </fieldset>
+
+    <fieldset data-q="q57">
+      <legend>57. Im Zuge der Atemschutzüberwachung werden festgehalten:</legend>
+      <label><input type="checkbox" name="q57" value="a"> a) Name, Zeit, Gerätenummer, letzte TÜV -Überprüfung</label>
+      <label><input type="checkbox" name="q57" value="b"> b) Name, Uhrzeit, Fülldruck zu Beginn, nach 1/3 und nach 2/3 der Einsatzzeit, Ein-</label>
+      <label><input type="checkbox" name="q57" value="c"> c) Außentemperatur, Innentemperatur, Luftfeuchtigkeit, Luftdruck</label>
+      <label><input type="checkbox" name="q57" value="d"> d) Körpertemperatur, Atemfrequenz, Schuhgröße, Geburtsdatum</label>
+    </fieldset>
+
+    <fieldset data-q="q58">
+      <legend>58. Der Luftverbrauch eines Atemschutzgeräteträgers ist abhängig:</legend>
+      <label><input type="checkbox" name="q58" value="a"> a) von seiner körperlichen Fitness</label>
+      <label><input type="checkbox" name="q58" value="b"> b) von der Einsatzbel astung</label>
+      <label><input type="checkbox" name="q58" value="c"> c) von dem Gewicht und der Wärmeisolation der Schutzausrüstung</label>
+      <label><input type="checkbox" name="q58" value="d"> d) von der Bauart des Lungenautomaten</label>
+    </fieldset>
+
+    <fieldset data-q="q59">
+      <legend>59. In welche zwei Gruppen werden Atemschutzgeräte nach FwDV 7unterteilt?</legend>
+      <label><input type="checkbox" name="q59" value="a"> a) Fluchtgeräte und Rettungsgeräte</label>
+      <label><input type="checkbox" name="q59" value="b"> b) Filtergeräte und Isoliergeräte</label>
+      <label><input type="checkbox" name="q59" value="c"> c) Feuerwehrgeräte und Arbeitsschutzgeräte</label>
+      <label><input type="checkbox" name="q59" value="d"> d) Stationäre und mobile Atemschutzgeräte</label>
+    </fieldset>
+
+    <fieldset data-q="q60">
+      <legend>60. Ein Atemschutzgeräteträger darf nicht in den Atemschutzeinsatz gehen, wenn</legend>
+      <label><input type="checkbox" name="q60" value="a"> a) er im Bereich der Dichtlinie des Atemanschlusses Körperschmuck trägt.</label>
+      <label><input type="checkbox" name="q60" value="b"> b) Kopfbehaarung (Bart, Koteletten, Haupthaar) den Dichtsitz der Maske verhindert.</label>
+      <label><input type="checkbox" name="q60" value="c"> c) er Medikamente eingenommen hat, die die körperliche Leistungsfähigkeit herabset-</label>
+      <label><input type="checkbox" name="q60" value="d"> d) er Körperschmuck trägt, der beim An - bzw. Ablegen des Ateman schlusses zu</label>
+    </fieldset>
+
+    <fieldset data-q="q61">
+      <legend>61. Wie lautet eine korrekte Notfallmeldung?</legend>
+      <label><input type="checkbox" name="q61" value="a"> a) „Mayday; hier &lt; Funkrufname &gt;, &lt;Standort &gt;, &lt;Lage&gt;, melden - mayday!“</label>
+      <label><input type="checkbox" name="q61" value="b"> b) „Hilfe, Hilfe; hier &lt; Funkrufname &gt;, &lt;Standort &gt;, &lt;Lage&gt; - kommen!“</label>
+      <label><input type="checkbox" name="q61" value="c"> c) „Blitz; hier &lt; Funkrufname &gt;, &lt;Standort &gt;, &lt;Lage&gt; - kommen!“</label>
+      <label><input type="checkbox" name="q61" value="d"> d) “Mayday; mayday; mayday; hier &lt; Funkrufname &gt;, &lt;Standort &gt;, &lt;Lage&gt;, mayday –</label>
+    </fieldset>
+
+    <fieldset data-q="q62">
+      <legend>62. Welche allgemeinen Einsatzgrundsätze muss ein Atemschutzgeräteträger beachten?</legend>
+      <label><input type="checkbox" name="q62" value="a"> a) Jeder Atemschutzgeräteträger ist für seine Sicherheit eigenverantwortlich.</label>
+      <label><input type="checkbox" name="q62" value="b"> b) Atemschutzgeräte sind immer am Verteiler an - und abzulegen.</label>
+      <label><input type="checkbox" name="q62" value="c"> c) Vor dem Einsatz muss eine Einsatzkurzprüfung durchgeführt werden.</label>
+      <label><input type="checkbox" name="q62" value="d"> d) Der Flüssigkeitsverlust der Einsatzkräfte ist durch geeignete Getränke (z.B.</label>
+    </fieldset>
+
+    <fieldset data-q="q63">
+      <legend>63. Vor dem Atemschutzeinsatz müssen Geräteträger</legend>
+      <label><input type="checkbox" name="q63" value="a"> a) trinken vermeiden, um nicht übermäßig zu schwitzen.</label>
+      <label><input type="checkbox" name="q63" value="b"> b) eine Dichtprobe der Maske (Handballenprobe) durchführen.</label>
+      <label><input type="checkbox" name="q63" value="c"> c) die Einsatzkurzprüfung an ihrem Gerät durchführen.</label>
+      <label><input type="checkbox" name="q63" value="d"> d) den Lungenautomaten truppweise anschließen und gegenseitig den Sitz der</label>
+    </fieldset>
+
+    <fieldset data-q="q64">
+      <legend>64. Gehen Atemschutzgeräteträger zur Brandbekämpfung in den Innenangriff vor, müssen sie</legend>
+      <label><input type="checkbox" name="q64" value="a"> a) truppweise zusammenbleiben.</label>
+      <label><input type="checkbox" name="q64" value="b"> b) sich gegebenenfalls dicht am Boden halten, da hier die Temperatur geringer und die</label>
+      <label><input type="checkbox" name="q64" value="c"> c) eine ständige Sprechfunkverbindung zum zuständigen Einheitsführer aufrechterhal-</label>
+      <label><input type="checkbox" name="q64" value="d"> d) durch eine Feuerwehrleine, ein Leinensystem o der eine Schlauchleitung den Rück-</label>
+    </fieldset>
+
+    <fieldset data-q="q65">
+      <legend>65. Wann muss sich ein Atemschutztrupp im Innenangriff selbstständig in einen sicheren Bereich zurückziehen?</legend>
+      <label><input type="checkbox" name="q65" value="a"> a) bei erkannter akuter Einsturzgefahr</label>
+      <label><input type="checkbox" name="q65" value="b"> b) bei einer erkannten bevorstehenden Durchzündung</label>
+      <label><input type="checkbox" name="q65" value="c"> c) bei einer zu starken Wärmeentwicklung (z.B. sichtbares Abschmelzen von</label>
+      <label><input type="checkbox" name="q65" value="d"> d) bei einer akuten Gefährdung, die durch den Gruppenführer nicht vorherzusehen war</label>
+    </fieldset>
+
+    <fieldset data-q="q66">
+      <legend>66. Nach welchen Belastungen muss ein Atemschutzgerät von einem Atemschutzgerätewart g esondert überprüft werden?</legend>
+      <label><input type="checkbox" name="q66" value="a"> a) nach Kontamination mit aggressiven Chemikalien, sowie starkem Rußniederschlag</label>
+      <label><input type="checkbox" name="q66" value="b"> b) nach einer direkten Beflammung (z.B. Durchzündung)</label>
+      <label><input type="checkbox" name="q66" value="c"> c) nach einem längeren Aufenthalt in hoch erhitzten Räume n</label>
+      <label><input type="checkbox" name="q66" value="d"> d) nach einem harten Aufschlag des Druckminderers während eines Durchganges in der</label>
+    </fieldset>
+
+    <fieldset data-q="q67">
+      <legend>67. Wie weit muss das Flaschenventil der Atemluftflasche aufgedreht werden?</legend>
+      <label><input type="checkbox" name="q67" value="a"> a) Vollständig bis zum Anschlag und dann eine halbe Umdrehung wieder zurück, um</label>
+      <label><input type="checkbox" name="q67" value="b"> b) Eine halbe Umdrehung reicht aus, um den Pressluftatmer schneller einsatzbereit zu</label>
+      <label><input type="checkbox" name="q67" value="c"> c) Vollständig bis zum Anschlag, um das Risiko eines selbstständiges Schließen s des</label>
+      <label><input type="checkbox" name="q67" value="d"> d) Es gib t keine speziellen Vorgaben</label>
+    </fieldset>
+
+    <fieldset data-q="q68">
+      <legend>68. Unter der Eigenverantwortung des Atemschutzgeräteträgers fällt</legend>
+      <label><input type="checkbox" name="q68" value="a"> a) das Führen eines persönlichen Atemschutznachweisheftes.</label>
+      <label><input type="checkbox" name="q68" value="b"> b) die Teilnahme am Umbau der Atemschutzübungsstrecke.</label>
+      <label><input type="checkbox" name="q68" value="c"> c) den eignen aktuellen Gesundheitszustand vor dem Einsatz unter Isoliergerät zu be-</label>
+      <label><input type="checkbox" name="q68" value="d"> d) Einsatzübungen unter PA im Zweijahresdienstplan zu berücksichtigen.</label>
+    </fieldset>
+
+    <fieldset data-q="q69">
+      <legend>69. Ein AGT hat sich im Innenangriff überlastet und hat das Gefühl entkräftet zu sein und nicht genügend Atemluft zu bekommen.</legend>
+      <label><input type="checkbox" name="q69" value="a"> a) Er funkt sofort Mayday und wartet auf Rettung.</label>
+      <label><input type="checkbox" name="q69" value="b"> b) Er zieht sich mit seinem Truppmitglied in einen weniger thermisch belasteten B e-</label>
+      <label><input type="checkbox" name="q69" value="c"> c) Er zieht in Panik die Maske vom Kopf.</label>
+      <label><input type="checkbox" name="q69" value="d"> d) Er versucht Ruhe zu bewahren.</label>
+    </fieldset>
+
+    <fieldset data-q="q70">
+      <legend>70. Ein AGT hat sich im Innenangriff überlastet und hat das Gefühl entkräftet zu sein und nicht genügend Atemluft zu bekommen.</legend>
+      <label><input type="checkbox" name="q70" value="a"> a) Er informiert sein Truppmitglied.</label>
+      <label><input type="checkbox" name="q70" value="b"> b) Er entlastet durch Anheben des PA den Brustraum und führt sich durch vorüber ge-</label>
+      <label><input type="checkbox" name="q70" value="c"> c) Nach Stabilisierung der Situation zieht sich der Trupp gemeinsam zurück.</label>
+      <label><input type="checkbox" name="q70" value="d"> d) Eine Lagemeldung muss in dieser Situation nicht gegeben werden.</label>
+    </fieldset>
+
+    <fieldset data-q="q71">
+      <legend>71. Ein Atemschutzgeräteträger im Innenangriff</legend>
+      <label><input type="checkbox" name="q71" value="a"> a) muss eine Maschinistenausbildung erfolgreich absolviert haben.</label>
+      <label><input type="checkbox" name="q71" value="b"> b) soll in Strahlrohrtechniken und Schlauchmanagement geübt sein.</label>
+      <label><input type="checkbox" name="q71" value="c"> c) kann über sein Vorgehen frei entscheiden.</label>
+      <label><input type="checkbox" name="q71" value="d"> d) gibt ca. alle 30 Minuten eine Lagemeldung.</label>
+    </fieldset>
+
+    <fieldset data-q="q72">
+      <legend>72. Die Atemschutzüberwachung</legend>
+      <label><input type="checkbox" name="q72" value="a"> a) wird von dem unter Isoliergerät vorgehenden Trupp durch regelmäßige Meldungen</label>
+      <label><input type="checkbox" name="q72" value="b"> b) ist der erste Ansprechpartner für Lagemeldungen der vorgehenden Atemschutz-</label>
+      <label><input type="checkbox" name="q72" value="c"> c) bestimmt das Vorg ehen der AGT -Trupps.</label>
+      <label><input type="checkbox" name="q72" value="d"> d) ist als „Assistent“ für den GF tätig, der den Innenangriff leitet.</label>
+    </fieldset>
+
+    <fieldset data-q="q73">
+      <legend>73. Beim Absuchen von Räumen</legend>
+      <label><input type="checkbox" name="q73" value="a"> a) bestimmt der Einheitsführer die abzusuchenden Räume und das Suchverfahren.</label>
+      <label><input type="checkbox" name="q73" value="b"> b) sind regelmäßig Lagemeldungen an den Gruppenführer zu geben.</label>
+      <label><input type="checkbox" name="q73" value="c"> c) braucht nicht unter Tischen oder hinter Türen gesucht werden. Von Rauch geschä-</label>
+      <label><input type="checkbox" name="q73" value="d"> d) sind abgesuchte Räume zu kennzeichnen.</label>
+    </fieldset>
+
+    <fieldset data-q="q74">
+      <legend>74. Das Absuchen von Räumen in Wohnungen</legend>
+      <label><input type="checkbox" name="q74" value="a"> a) wird durch die Feuerwehrleine gesichert. Das Hohlstrahlrohr bleibt immer am Woh-</label>
+      <label><input type="checkbox" name="q74" value="b"> b) kann durch den Einsatz einer Wärmebildkamera erleichtert werden.</label>
+      <label><input type="checkbox" name="q74" value="c"> c) wird von Anfang an sehr gründlich und zeitintensiv durchgeführt.</label>
+      <label><input type="checkbox" name="q74" value="d"> d) schließt die Kontrolle unter Betten und in Schränken mit ein. Kinder neigen dazu,</label>
+    </fieldset>
+
+    <fieldset data-q="q75">
+      <legend>75. Bei der Vornahme eines Rohres im Innenangriff</legend>
+      <label><input type="checkbox" name="q75" value="a"> a) ist auf ausreichende Schlauchreserve zu achten.</label>
+      <label><input type="checkbox" name="q75" value="b"> b) spielt die abgegebene Löschmittelmenge keine Rolle, da die Atmung du rch den PA</label>
+      <label><input type="checkbox" name="q75" value="c"> c) ist sparsam mit Wasser umzugehen.</label>
+      <label><input type="checkbox" name="q75" value="d"> d) ist die Rauchkühlung mit Vollstrahl durchzuführen.</label>
+    </fieldset>
+
+    <fieldset data-q="q76">
+      <legend>76. Die Persönliche -Schutz -Ausrüstung PSA für die Brandbekämpfung</legend>
+      <label><input type="checkbox" name="q76" value="a"> a) unterliegt keinen bestimmten Prüfvorschriften.</label>
+      <label><input type="checkbox" name="q76" value="b"> b) ist dem Einsatzauftrag (Innenan griff, Vegetationsbrandbekämpfung) angemessen zu</label>
+      <label><input type="checkbox" name="q76" value="c"> c) muss eigenverantwortlich durch den Träger nach jedem Einsatz und regelmäßig auf</label>
+      <label><input type="checkbox" name="q76" value="d"> d) kann durch die Bauform und / oder infolge Fristablauf für den Innenangriff nicht</label>
+    </fieldset>
+
+    <fieldset data-q="q77">
+      <legend>77. Die Schutzwirkung der wärmeisolierenden PSA wird erreicht,</legend>
+      <label><input type="checkbox" name="q77" value="a"> a) wenn sie nach Herstellerangaben getragen und gepflegt wird.</label>
+      <label><input type="checkbox" name="q77" value="b"> b) wenn im Innenangriff alle Körperstellen bei jeder Bewegung abgedeckt sind.</label>
+      <label><input type="checkbox" name="q77" value="c"> c) wenn beliebig geschnittene Jacken und Hosen verschied ener Hersteller miteinander</label>
+      <label><input type="checkbox" name="q77" value="d"> d) wenn Kleidung mit sichtbar thermischer Zersetzung kalt gewaschen wird.</label>
+    </fieldset>
+
+    <fieldset data-q="q78">
+      <legend>78. Die effektive Einsatzzeit eines AGT wird begrenzt durch</legend>
+      <label><input type="checkbox" name="q78" value="a"> a) dass im Behälter des Isoliergeräts mitgeführte Atemluftvolumen.</label>
+      <label><input type="checkbox" name="q78" value="b"> b) den Schadstoffanteil der Luft beim Einsatz von Filtern im Freien.</label>
+      <label><input type="checkbox" name="q78" value="c"> c) den grundsätzlichen Atemluftverbrauch von 50 l/min unter wärmeisolierender</label>
+      <label><input type="checkbox" name="q78" value="d"> d) die Art der Schutzkleidung, z.B. CSA.</label>
+    </fieldset>
+
+    <fieldset data-q="q79">
+      <legend>79. Die Einsatzzeit eines AGT hängt ab von</legend>
+      <label><input type="checkbox" name="q79" value="a"> a) der körperlichen Belastung.</label>
+      <label><input type="checkbox" name="q79" value="b"> b) der individuellen körperlichen Fitness.</label>
+      <label><input type="checkbox" name="q79" value="c"> c) der Atemtechnik.</label>
+      <label><input type="checkbox" name="q79" value="d"> d) der unmittelbaren Umgebungstemperatur.</label>
+    </fieldset>
+
+    <fieldset data-q="q80">
+      <legend>80. Atemgifte können konzentriert auftreten</legend>
+      <label><input type="checkbox" name="q80" value="a"> a) in geschlossenen Räumen.</label>
+      <label><input type="checkbox" name="q80" value="b"> b) in tiefer liegenden Räumen.</label>
+      <label><input type="checkbox" name="q80" value="c"> c) in Industrieanlagen, in denen chem ische Prozesse stattfinden.</label>
+      <label><input type="checkbox" name="q80" value="d"> d) auf freiem Feld.</label>
+    </fieldset>
+
+    <fieldset data-q="q81">
+      <legend>81. Mit konzentrierten Atemgiften ist zu rechnen</legend>
+      <label><input type="checkbox" name="q81" value="a"> a) bei Biogasanlagen.</label>
+      <label><input type="checkbox" name="q81" value="b"> b) nur im Innenangriff.</label>
+      <label><input type="checkbox" name="q81" value="c"> c) bei Bränden von Kunststoff verarbeitenden Betrieben.</label>
+      <label><input type="checkbox" name="q81" value="d"> d) nur bei dichtem Rauch.</label>
+    </fieldset>
+
+    <fieldset data-q="q82">
+      <legend>82. Ein Einsatz unter Atemschutz</legend>
+      <label><input type="checkbox" name="q82" value="a"> a) ist bei einer akuten Erkältungskrankheit nicht zulässig.</label>
+      <label><input type="checkbox" name="q82" value="b"> b) ist bereits nach einem Tag nach Abklingen einer fiebrigen Erkrankung möglich.</label>
+      <label><input type="checkbox" name="q82" value="c"> c) soll bei verminderter Leistungsfähigkeit nicht durchgeführt werden.</label>
+      <label><input type="checkbox" name="q82" value="d"> d) darf erst 12 Stunden nach dem Ausüben eine r Ausdauersportart erfolgen.</label>
+    </fieldset>
+
+    <fieldset data-q="q83">
+      <legend>83. Das Tragegestell eines Behältergerätes</legend>
+      <label><input type="checkbox" name="q83" value="a"> a) gewährleistet bei richtiger Einstellung eine gleichmäßige Gewichtsverteilung.</label>
+      <label><input type="checkbox" name="q83" value="b"> b) garantiert einen sicheren Transport der Atemluftflasche im Einsatz.</label>
+      <label><input type="checkbox" name="q83" value="c"> c) dient zum individuellen Anbringen von Haltern für persönliches Werkzeug.</label>
+      <label><input type="checkbox" name="q83" value="d"> d) unterliegt der Sichtprüfung durch den AGT vor Einsatzbeginn.</label>
+    </fieldset>
+
+    <fieldset data-q="q84">
+      <legend>84. Der Einsatz unter Atemschutz ist gefährlich. Mögliche Unfallursachen sind:</legend>
+      <label><input type="checkbox" name="q84" value="a"> a) Der Trupp trennt sich im Innenangriff.</label>
+      <label><input type="checkbox" name="q84" value="b"> b) Der Angriffsweg führt am Feuer vorbei.</label>
+      <label><input type="checkbox" name="q84" value="c"> c) Restalkohol oder Nebenwirkungen von Medikamenten wirken sich nicht aus.</label>
+      <label><input type="checkbox" name="q84" value="d"> d) Die Gebäudestruktur ist instabil.</label>
+    </fieldset>
+
+    <fieldset data-q="q85">
+      <legend>85. Beim Einsatz unter Atemschutz kann es im Innenangriff zu schweren Unfällen kommen. Mögliche Ursachen sind:</legend>
+      <label><input type="checkbox" name="q85" value="a"> a) Die Wasserversorgung w ird unterbrochen.</label>
+      <label><input type="checkbox" name="q85" value="b"> b) Eine anhaltend extrem hohe Raumtemperatur spielt beim Tragen der wärmeisolie-</label>
+      <label><input type="checkbox" name="q85" value="c"> c) Die Atemschutzüberwachung muss sich nur die vorgehenden Trupps merken. Deren</label>
+      <label><input type="checkbox" name="q85" value="d"> d) Eine bevorstehe nde Rauchgasdurchzündung wird nicht rechtzeitig erkannt.</label>
+    </fieldset>
+
+    <fieldset data-q="q86">
+      <legend>86. Ein Filtergerät ist abhängig von</legend>
+      <label><input type="checkbox" name="q86" value="a"> a) Nur von der Menge, nicht von der Art der Schadstoffe.</label>
+      <label><input type="checkbox" name="q86" value="b"> b) Zeit</label>
+      <label><input type="checkbox" name="q86" value="c"> c) Sauerstoffanteil der Umgebungsluft</label>
+      <label><input type="checkbox" name="q86" value="d"> d) Ort</label>
+    </fieldset>
+
+    <fieldset data-q="q87">
+      <legend>87. Eine Eignu ngsuntersuchung ist erforderlich für</legend>
+      <label><input type="checkbox" name="q87" value="a"> a) Fluchtgeräte.</label>
+      <label><input type="checkbox" name="q87" value="b"> b) Für die Gerätegruppe 2 , Filtergeräte (ABEK 2 -P3).</label>
+      <label><input type="checkbox" name="q87" value="c"> c) Für die Gerätegruppe 3, für frei tragbare Isoliergeräte über 5 kg.</label>
+      <label><input type="checkbox" name="q87" value="d"> d) Für Filtergeräte mit Partikelfilterklasse P1 und P2.</label>
+    </fieldset>
+
+    <fieldset data-q="q88">
+      <legend>88. Womit muss bei der Rettung von Personen mit einem Filter -Fluchtgerät gerechnet werden?</legend>
+      <label><input type="checkbox" name="q88" value="a"> a) Die Person kann problemlos durch den Rauch hindurchgeführt werden.</label>
+      <label><input type="checkbox" name="q88" value="b"> b) Panikreaktionen.</label>
+      <label><input type="checkbox" name="q88" value="c"> c) Bewusstseinstrübung durch Sauerstoffknappheit.</label>
+      <label><input type="checkbox" name="q88" value="d"> d) Das Fluchtgerät ist nach de r Entnahme aus der Originalverpackung sofort einsatzbe-</label>
+    </fieldset>
+
+    <fieldset data-q="q89">
+      <legend>89. Zu den allgemeinen Grundsätzen beim Einsatz unter Atemschutz gehört</legend>
+      <label><input type="checkbox" name="q89" value="a"> a) Die Eigenverantwortlichkeit des AGT.</label>
+      <label><input type="checkbox" name="q89" value="b"> b) Der AGT muss aktuell körperlich und fachlich geeignet sein.</label>
+      <label><input type="checkbox" name="q89" value="c"> c) Die Mindeststärke bei Eins atz von Isoliergeräten beträgt 2 + 2 AGT (Sicherheits-</label>
+      <label><input type="checkbox" name="q89" value="d"> d) Die Einsatzkurzprüfung vor dem Einsatz.</label>
+    </fieldset>
+
+    <fieldset data-q="q90">
+      <legend>90. Zum Einsatz unter Atemschutz gehört</legend>
+      <label><input type="checkbox" name="q90" value="a"> a) Eine rechtzeitige Ablösung des AGT, so dass zum Einsatzende noch ausreichend</label>
+      <label><input type="checkbox" name="q90" value="b"> b) Eine Ruhepause zwischen zwei Einsätzen unter Isoliergerät ist grundsätzlich nicht er-</label>
+      <label><input type="checkbox" name="q90" value="c"> c) Nach dem Einsatz ist ein Flüssigkeitsausgleich mit alkoholischen Getränken sinnvoll.</label>
+      <label><input type="checkbox" name="q90" value="d"> d) Im Einsatz stark verschmutzte Schutzkleidung kann bedenkenlos im Mannschaft s-</label>
+    </fieldset>
+
+    <fieldset data-q="q91">
+      <legend>91. Beim Einsatz von wärmeisolierender Schutzkleidung ist zu beachten</legend>
+      <label><input type="checkbox" name="q91" value="a"> a) Nach starker Kontamination besteht beim Ablegen des Pressluftatmers durch den</label>
+      <label><input type="checkbox" name="q91" value="b"> b) Die Schutzkleidung muss sich in jeder Körperhaltung überdecken.</label>
+      <label><input type="checkbox" name="q91" value="c"> c) Wärmeisolierende Schutzkleidung kann beliebig kombiniert werden.</label>
+      <label><input type="checkbox" name="q91" value="d"> d) Wärmeisolierende Schutzkleidung bedarf keiner besonderen Pflege und kann haus-</label>
+    </fieldset>
+
+    <fieldset data-q="q92">
+      <legend>92. Was versteht man im Atemschutz unter truppweisem Vorgehen?</legend>
+      <label><input type="checkbox" name="q92" value="a"> a) Ein Trupp besteht grundsätzlich nur aus zwei AGT.</label>
+      <label><input type="checkbox" name="q92" value="b"> b) Der Trupp rüstet sich gemeinsam aus.</label>
+      <label><input type="checkbox" name="q92" value="c"> c) Die Truppmitglieder gehen auf „Tuchfühlung“, halten untereinander ständigen</label>
+      <label><input type="checkbox" name="q92" value="d"> d) Der Trupp darf sich zum Rückzug trenn en, wenn ein Truppmitglied einen deutlich</label>
+    </fieldset>
+
+    <fieldset data-q="q93">
+      <legend>93. Worauf ist beim Betreten von Brandräumen zu achten?</legend>
+      <label><input type="checkbox" name="q93" value="a"> a) Der AGT ist durch die wärmeisolierende Schutzkleidung ausreichend geschützt. Es</label>
+      <label><input type="checkbox" name="q93" value="b"> b) Durch das Öffnen eines Zugangs kann es zu einer heftigen Reaktion des Rauchgases</label>
+      <label><input type="checkbox" name="q93" value="c"> c) Eine Wärmebildkamera gewährleistet beim Absuchen von stark verrauchten Räu-</label>
+      <label><input type="checkbox" name="q93" value="d"> d) Eine Sprechfunkv erbindung ist zur Verständigung mit dem Einheitsführer und der</label>
+    </fieldset>
+
+    <fieldset data-q="q94">
+      <legend>94. Wie ist in stark verrauchten Räumen vorzugehen</legend>
+      <label><input type="checkbox" name="q94" value="a"> a) Die Vorgehensweise ist den Sichtverhältnissen anzupassen.</label>
+      <label><input type="checkbox" name="q94" value="b"> b) Wenn man auf „allen Vieren“ vorgeht, ist das di e sicherste Variante.</label>
+      <label><input type="checkbox" name="q94" value="c"> c) Der Seitenkriechgang bietet eine stabile Körperhaltung, die Möglichkeit des tasten-</label>
+      <label><input type="checkbox" name="q94" value="d"> d) Den Rauch mit großen Sprühwassermengen niederschlag en.</label>
+    </fieldset>
+
+    <fieldset data-q="q95">
+      <legend>95. Was soll durch den AGT Trupp im Innenangriff an den Einheitsführer gemeldet werden</legend>
+      <label><input type="checkbox" name="q95" value="a"> a) Es genügt regelmäßig die Behälterdrücke der PA anzugeben.</label>
+      <label><input type="checkbox" name="q95" value="b"> b) Der gegenwärtige ggf. geänderte Standort (z.B. das Stockwerk).</label>
+      <label><input type="checkbox" name="q95" value="c"> c) Die Lage von Gasabsperrschieber und -versorgungsleitungen, Gefahrstoffe (z.B.</label>
+      <label><input type="checkbox" name="q95" value="d"> d) Bauliche (Brandwand, Rauchschutztür) und Anlagentechnische Einrichtungen</label>
+    </fieldset>
+
+    <fieldset data-q="q96">
+      <legend>96. Die Reihenfolge des Anlegens der Schutzkleidung</legend>
+      <label><input type="checkbox" name="q96" value="a"> a) ist detailliert vorgeschrieben.</label>
+      <label><input type="checkbox" name="q96" value="b"> b) kann individuell und der Lage bzw. dem Aufbewahrungsort der Isoliergeräte ange-</label>
+      <label><input type="checkbox" name="q96" value="c"> c) birgt unterschiedliche Risiken. z.B. kann sich die Maskenbebänderung durch unge-</label>
+      <label><input type="checkbox" name="q96" value="d"> d) spielt keine Rolle, da sich truppweise ausgerüstet und geholfen wird. D ie Atemluft-</label>
+    </fieldset>
+
+    <fieldset data-q="q97">
+      <legend>97. Der Sicherheitstrupp</legend>
+      <label><input type="checkbox" name="q97" value="a"> a) kann durch die dienstjüngsten AGT gestellt werden.</label>
+      <label><input type="checkbox" name="q97" value="b"> b) hat ein Isoliergerät geschultert, hat Sicherungs - sowie Rettungsgerät an zentraler</label>
+      <label><input type="checkbox" name="q97" value="c"> c) besteht aus erfahrenen und notfalltrainierten AGT.</label>
+      <label><input type="checkbox" name="q97" value="d"> d) wird im Ermessen des vorgehenden PA Trupps bereitgestellt.</label>
+    </fieldset>
+
+    <fieldset data-q="q98">
+      <legend>98. Der Trupp geht geschlossen zurück, wenn</legend>
+      <label><input type="checkbox" name="q98" value="a"> a) die akustische Restdruck warneinrichtung ertönt.</label>
+      <label><input type="checkbox" name="q98" value="b"> b) die Gefahrensituati on nicht beherrschbar ist,</label>
+      <label><input type="checkbox" name="q98" value="c"> c) gesundheitliche Probleme auftreten.</label>
+      <label><input type="checkbox" name="q98" value="d"> d) eine Rückzugsaufforderung durch den Einheitsführer gegeben wird.</label>
+    </fieldset>
+
+    <fieldset data-q="q99">
+      <legend>99. Beim Innenangriff unter Atemschutz</legend>
+      <label><input type="checkbox" name="q99" value="a"> a) ist auf die Vollständigkeit der wärmeisolierenden Schutzkleidung zu achten.</label>
+      <label><input type="checkbox" name="q99" value="b"> b) ist der richtige Sitz der Überbekleidung gegeben, wenn bei jeder Körperhaltung eine</label>
+      <label><input type="checkbox" name="q99" value="c"> c) kann bei Übungen oder bei der jährlichen Belastungsübung auf das vollständige An-</label>
+      <label><input type="checkbox" name="q99" value="d"> d) kann auf die Flammschutzhaube verzichtet werden, um die Wärme rechtzeitig mer-</label>
+    </fieldset>
+
+    <fieldset data-q="q100">
+      <legend>100. Ein Atemschutzgeräteträger darf nicht eingesetzt werden, wenn er körperlich beeinträchtigt ist</legend>
+      <label><input type="checkbox" name="q100" value="a"> a) durch einen unzureichenden Dichtsitz infolge von Haaren, von Narben oder Kopf-</label>
+      <label><input type="checkbox" name="q100" value="b"> b) durch feststellbaren Restalkohol.</label>
+      <label><input type="checkbox" name="q100" value="c"> c) durch eine Erkältungskrankheit.</label>
+      <label><input type="checkbox" name="q100" value="d"> d) Konditionelle Schwächen können durch die vorherige Einnahme eines Energy Drinks</label>
+    </fieldset>
+
+    <fieldset data-q="q101">
+      <legend>101. Besondere Gefahren beim Innenangriff unter Atemschutz entstehen, wenn</legend>
+      <label><input type="checkbox" name="q101" value="a"> a) unzureichende oder unvollständige persönliche Schutzkleidung getragen wird.</label>
+      <label><input type="checkbox" name="q101" value="b"> b) sich Brände schnell und unkontrolliert ausbreiten.</label>
+      <label><input type="checkbox" name="q101" value="c"> c) Innen - und Außenangriff nicht grundsätzlich gleichzeitig durchgeführt werden.</label>
+      <label><input type="checkbox" name="q101" value="d"> d) vorgehende Einsatzkräfte praxisnah ausgebildet worden sind.</label>
+    </fieldset>
+
+    <fieldset data-q="q102">
+      <legend>102. Nach einem Innenangriff in einem stark verrauchten Gebäude</legend>
+      <label><input type="checkbox" name="q102" value="a"> a) ist die wärmeisolierende Schutzkleidung durch den Brandrauch kontaminiert.</label>
+      <label><input type="checkbox" name="q102" value="b"> b) gibt die Schutzkleidung Atemgifte ab.</label>
+      <label><input type="checkbox" name="q102" value="c"> c) genügt es immer, die Schutzkleidung bis zum nächsten Gebrauch an einen gut ge-</label>
+      <label><input type="checkbox" name="q102" value="d"> d) muss unmittelbar nach dem Ablegen des Atemanschlusses mit dem Flüssigkeitsaus-</label>
+    </fieldset>
+
+    <fieldset data-q="q103">
+      <legend>103. Beim Anlegen des Atemanschlusses ist zu beachten:</legend>
+      <label><input type="checkbox" name="q103" value="a"> a) Bei der Handballendichtprobe wird die Atemschutzmaske mit der anderen Hand</label>
+      <label><input type="checkbox" name="q103" value="b"> b) Die Dichtprobe wird nach dem Aufsetzen der Flammschutzhaube und des Helms</label>
+      <label><input type="checkbox" name="q103" value="c"> c) Die Atemanschlüsse sind so funktional aufgebaut, dass auf ein gleichmäßiges Anzie-</label>
+      <label><input type="checkbox" name="q103" value="d"> d) Die Herstellerangaben sind zu beachten</label>
+    </fieldset>
+
+    <fieldset data-q="q104">
+      <legend>104. Wie wird ein Brand im Innenangriff bekä mpft</legend>
+      <label><input type="checkbox" name="q104" value="a"> a) mit Vollstrahl mit hohen Durchflussraten.</label>
+      <label><input type="checkbox" name="q104" value="b"> b) mit einem Hohlstrahlrohr kann zu Beginn eine Rauchgaskühlung durchgeführt wer-</label>
+      <label><input type="checkbox" name="q104" value="c"> c) die Löschwasserabgabe darf nicht unterbrochen werden.</label>
+      <label><input type="checkbox" name="q104" value="d"> d) das Strahlrohr wird dynamisch geführt, um zu starke Dampfbildung und Wass er-</label>
+    </fieldset>
+
+    <fieldset data-q="q105">
+      <legend>105. Die Einsatzk urzprüfung</legend>
+      <label><input type="checkbox" name="q105" value="a"> a) muss auch nach dem Wechsel des Lungenautoamten durchgeführt.</label>
+      <label><input type="checkbox" name="q105" value="b"> b) entscheidet darüber, ob ein Isoliergerät eingesetzt werden darf oder nicht.</label>
+      <label><input type="checkbox" name="q105" value="c"> c) ist nur erforderlich, wenn der Pressluftatmer auf einem Feuerwehrfahrzeug verlastet</label>
+      <label><input type="checkbox" name="q105" value="d"> d) kann im Fahrzeug unvollständig ausgeführt werden, wenn die Anfahrtszeit sehr</label>
+    </fieldset>
+
+    <fieldset data-q="q106">
+      <legend>106. Die wärmeisolierende Schutzkleidung</legend>
+      <label><input type="checkbox" name="q106" value="a"> a) wird durch die Flammschutzhaube ergänzt.</label>
+      <label><input type="checkbox" name="q106" value="b"> b) kann ihre Schutzwirkung verlieren , wenn diese z.B. d urch eine Rauchgasdurchzün-</label>
+      <label><input type="checkbox" name="q106" value="c"> c) kann in einer üblichen Haushaltswaschmaschine gereinigt werden.</label>
+      <label><input type="checkbox" name="q106" value="d"> d) bietet durch die integrierte Dampfsperre auch bei Dampfentwicklung infolge von</label>
+    </fieldset>
+
+    <fieldset data-q="q107">
+      <legend>107. Nach d em Einsatz unter Isoliergerät</legend>
+      <label><input type="checkbox" name="q107" value="a"> a) ist der Geräteträger immer und zu jeder Zeit ausreichend gegen Atemgifte ge-</label>
+      <label><input type="checkbox" name="q107" value="b"> b) besteht d urch die Schutzkleidung die Gefahr der Kontaminationsverschleppung.</label>
+      <label><input type="checkbox" name="q107" value="c"> c) kann es zur Aufnahme von Gefahrstoffen durch Hautresorption kommen .</label>
+      <label><input type="checkbox" name="q107" value="d"> d) gebrauchte Isoliergeräte werden gemeinsam mit den verschmutzten Schläuchen im</label>
+    </fieldset>
+
+    <fieldset data-q="q108">
+      <legend>108. Die ersten Tätigkeiten eines AGT im Innenangriff m üssen unter erfahrener Führung erfolgen,</legend>
+      <label><input type="checkbox" name="q108" value="a"> a) da eine erhöhte Löschmittelabgabe mit starker Dampfbildung einhergeht.</label>
+      <label><input type="checkbox" name="q108" value="b"> b) weil die Gefahrensituationen noch nicht eingeschätzt werden können.</label>
+      <label><input type="checkbox" name="q108" value="c"> c) da erforderliche Handlungsabläufe noch nicht eingespielt sind.</label>
+      <label><input type="checkbox" name="q108" value="d"> d) wenn nicht umfangreiches theoretisc hes Wissen angeeignet worden ist.</label>
+    </fieldset>
+
+  </form>
+
+  <script>
+    // ============================
+    // Antwortschlüssel
+    // ============================
+    // Trage hier anhand des Original-PDFs (gelb markierte Antworten)
+    // für jede Frage die richtigen Antwort-Buchstaben ein, z.B.:
+    // q1: ['a','b'], q2: ['a'], q3: ['b','d'], ...
+    // Solange der Schlüssel leer ist, funktioniert die Auswertung zwar,
+    // aber es werden keine Fragen als richtig/ falsch markiert.
+
+    const answerKey = {
+            q1: ['a', 'b'], 
+            q2: ['a'], 
+            q3: ['b', 'd'],
+            q4: ['c'], 
+            q5: ['a'], 
+            q6: ['c'], 
+            q7: ['b'], 
+            q8: ['c'], 
+            q9: ['a'], 
+            q10: ['c'], 
+            q11: ['b', 'c'], 
+            q12: ['a'], 
+            q13: ['c'], 
+            q14: ['a'], 
+            q15: ['a', 'b', 'c', 'd'], 
+            q16: ['b', 'c', 'd'], 
+            q17: ['b', 'c', 'd'], 
+            q18: ['c'], 
+            q19: ['c'], 
+            q20: ['d'], 
+            q21: ['b'], 
+            q22: ['b', 'd'], 
+            q23: ['a', 'c'], 
+            q24: ['b', 'c'], 
+            q25: ['c'], 
+            q26: ['c', 'd'], 
+            q27: ['a'], 
+            q28: ['c'], 
+            q29: ['b'], 
+            q30: ['a'],
+            q31: ['a', 'b', 'c', 'd'],
+            q32: ['a'],
+            q33: ['b', 'd'],
+            q34: ['a', 'b', 'c'],
+            q35: ['a', 'b', 'c'],
+            q36: ['c'],
+            q37: ['a', 'c', 'd'],
+            q38: ['b'],
+            q39: ['c'],
+            q40: ['a', 'c', 'd'],
+            q41: ['c'],
+            q42: ['a'],
+            q43: ['a', 'c', 'd'],
+            q44: ['c', 'd'],
+            q45: ['a', 'c', 'd'],
+            q46: ['a', 'd'],
+            q47: ['b'],
+            q48: ['b'],
+            q49: ['a'],
+            q50: ['a'],
+            q51: ['b', 'c', 'd'],
+            q52: ['b', 'd'],
+            q53: ['a'],
+            q54: ['a', 'c', 'd'],
+            q55: ['b'],
+            q56: ['b'],
+            q57: ['b'],
+            q58: ['a', 'b', 'c'],
+            q59: ['b'],
+            q60: ['a', 'b', 'c', 'd'],
+            q61: ['d'],
+            q62: ['a', 'c', 'd'],
+            q63: ['b', 'c', 'd'],
+            q64: ['a', 'b', 'c', 'd'],
+            q65: ['a', 'b', 'c', 'd'],
+            q66: ['a', 'b', 'c', 'd'],
+            q67: ['c'],
+            q68: ['a', 'c'],
+            q69: ['b', 'd'],
+            q70: ['a', 'b', 'c'],
+            q71: ['b'],
+            q72: ['a', 'd'],
+            q73: ['a', 'b', 'd'],
+            q74: ['b', 'd'],
+            q75: ['a', 'c'],
+            q76: ['b', 'c', 'd'],
+            q77: ['a', 'b'],
+            q78: ['a', 'b', 'd'],
+            q79: ['a', 'b', 'c', 'd'],
+            q80: ['a', 'b', 'c'],
+            q81: ['a', 'c'],
+            q82: ['a', 'c'],
+            q83: ['a', 'b', 'd'],
+            q84: ['a', 'b', 'd'],
+            q85: ['a', 'd'],
+            q86: ['b', 'c'],
+            q87: ['b', 'c'],
+            q88: ['b', 'c'],
+            q89: ['a', 'b', 'c', 'd'],
+            q90: ['a'],
+            q91: ['a', 'b'],
+            q92: ['b', 'c'],
+            q93: ['b', 'd'],
+            q94: ['a', 'c'],
+            q95: ['b', 'c'],
+            q96: ['b', 'c'],
+            q97: ['b', 'c'],
+            q98: ['a', 'b', 'c', 'd'],
+            q99: ['a', 'b'],
+            q100: ['a', 'b', 'c'],
+            q101: ['a', 'b'],
+            q102: ['a', 'b'],
+            q103: ['a', 'd'],
+            q104: ['b', 'd'],
+            q105: ['a', 'b'],
+            q106: ['a', 'b'],
+            q107: ['b', 'c'],
+            q108: ['a', 'b'],
         };
-        function evaluateQuiz() { let t = Object.keys(answerKey).length, s = 0; for (const q in answerKey) { const c = answerKey[q].sort(), l = [...document.querySelectorAll(`input[name="${q}"]:checked`)].map(i => i.value).sort(); if (JSON.stringify(c) === JSON.stringify(l)) s++; } const p = Math.round(100 * s / t); document.getElementById('resultBox').innerText = `Ergebnis: ${s} von ${t} Fragen korrekt (${p}%)`; }
-        function toggleKey() { document.getElementById('answerKey').classList.toggle('hidden'); }
-        document.getElementById('resetForm').addEventListener('click', () => { form.reset(); result.textContent = ''; });
-    </script>
-</body>
 
+    function evaluateQuiz() {
+      const form = document.getElementById('quizForm');
+      const fieldsets = form.querySelectorAll('fieldset[data-q]');
+      let totalWithKey = 0;
+      let correctCount = 0;
+
+      fieldsets.forEach(fs => {
+        const qid = fs.getAttribute('data-q');
+        fs.classList.remove('correct', 'incorrect');
+
+        const correct = answerKey[qid];
+        if (!correct) {
+          // Für diese Frage ist noch kein Schlüssel hinterlegt -> wird ignoriert
+          return;
+        }
+
+        totalWithKey++;
+        const correctSorted = [...correct].sort();
+        const selected = Array.from(
+          fs.querySelectorAll('input[type="checkbox"]:checked')
+        ).map(i => i.value).sort();
+
+        if (JSON.stringify(correctSorted) === JSON.stringify(selected)) {
+          fs.classList.add('correct');
+          correctCount++;
+        } else {
+          fs.classList.add('incorrect');
+        }
+      });
+
+      const summary = document.getElementById('summary');
+      if (totalWithKey === 0) {
+        summary.textContent = 'Es ist noch kein Antwortschlüssel hinterlegt. Bitte trage im JavaScript-Objekt answerKey die richtigen Antworten ein.';
+      } else {
+        const percent = Math.round((correctCount / totalWithKey) * 100);
+        summary.textContent = 'Auswertung: ' + correctCount +
+          ' von ' + totalWithKey + ' Fragen mit hinterlegtem Lösungsschlüssel korrekt (' + percent + '%).';
+      }
+    }
+
+    function resetQuiz() {
+      const form = document.getElementById('quizForm');
+      form.reset();
+      document.getElementById('summary').textContent = '';
+      const fieldsets = form.querySelectorAll('fieldset[data-q]');
+      fieldsets.forEach(fs => fs.classList.remove('correct', 'incorrect'));
+    }
+  </script>
+</body>
 </html>
